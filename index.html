@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎰 超ドキドキルーレット 🎰</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a2e;
+    font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  h1 {
+    color: #ffd700;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes titleGlow {
+    0% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00; }
+    100% { text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00, 0 0 80px #ff4500; }
+  }
+
+  .subtitle {
+    color: #aaa;
+    font-size: 1em;
+    margin-bottom: 30px;
+  }
+
+  .wheel-container {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: 0 auto 30px;
+  }
+
+  .wheel-outer {
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #ffd700 0deg 10deg, #1a1a4e 10deg 12deg,
+      #ffd700 12deg 22deg, #1a1a4e 22deg 24deg,
+      #ffd700 24deg 34deg, #1a1a4e 34deg 36deg,
+      #ffd700 36deg 46deg, #1a1a4e 46deg 48deg,
+      #ffd700 48deg 58deg, #1a1a4e 58deg 60deg,
+      #ffd700 60deg 70deg, #1a1a4e 70deg 72deg,
+      #ffd700 72deg 82deg, #1a1a4e 82deg 84deg,
+      #ffd700 84deg 94deg, #1a1a4e 94deg 96deg,
+      #ffd700 96deg 106deg, #1a1a4e 106deg 108deg,
+      #ffd700 108deg 118deg, #1a1a4e 118deg 120deg,
+      #ffd700 120deg 130deg, #1a1a4e 130deg 132deg,
+      #ffd700 132deg 142deg, #1a1a4e 142deg 144deg,
+      #ffd700 144deg 154deg, #1a1a4e 154deg 156deg,
+      #ffd700 156deg 166deg, #1a1a4e 166deg 168deg,
+      #ffd700 168deg 178deg, #1a1a4e 178deg 180deg,
+      #ffd700 180deg 190deg, #1a1a4e 190deg 192deg,
+      #ffd700 192deg 202deg, #1a1a4e 202deg 204deg,
+      #ffd700 204deg 214deg, #1a1a4e 214deg 216deg,
+      #ffd700 216deg 226deg, #1a1a4e 226deg 228deg,
+      #ffd700 228deg 238deg, #1a1a4e 238deg 240deg,
+      #ffd700 240deg 250deg, #1a1a4e 250deg 252deg,
+      #ffd700 252deg 262deg, #1a1a4e 262deg 264deg,
+      #ffd700 264deg 274deg, #1a1a4e 274deg 276deg,
+      #ffd700 276deg 286deg, #1a1a4e 286deg 288deg,
+      #ffd700 288deg 298deg, #1a1a4e 298deg 300deg,
+      #ffd700 300deg 310deg, #1a1a4e 310deg 312deg,
+      #ffd700 312deg 322deg, #1a1a4e 322deg 324deg,
+      #ffd700 324deg 334deg, #1a1a4e 334deg 336deg,
+      #ffd700 336deg 346deg, #1a1a4e 346deg 348deg,
+      #ffd700 348deg 358deg, #1a1a4e 358deg 360deg
+    );
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    animation: outerSpin 20s linear infinite;
+  }
+
+  @keyframes outerSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .wheel {
+    position: absolute;
+    top: 15px; left: 15px;
+    width: 310px; height: 310px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+  }
+
+  .wheel.spinning {
+    /* dynamic via JS */
+  }
+
+  .segment {
+    position: absolute;
+    width: 0; height: 0;
+    top: 50%; left: 50%;
+    transform-origin: 0 0;
+  }
+
+  /* pointer */
+  .pointer {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 35px solid #ff1744;
+    z-index: 10;
+    filter: drop-shadow(0 0 10px #ff1744);
+  }
+
+  .center-circle {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, #fff, #ddd);
+    border-radius: 50%;
+    z-index: 5;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+  }
+
+  .spin-btn {
+    padding: 18px 60px;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 5px 25px rgba(255, 65, 108, 0.5);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spin-btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 35px rgba(255, 65, 108, 0.7);
+  }
+
+  .spin-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .spin-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: btnShine 3s infinite;
+  }
+
+  @keyframes btnShine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+  }
+
+  /* Result overlay */
+  .result-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    animation: fadeInOverlay 0.5s;
+  }
+
+  .result-overlay.show { display: flex; }
+
+  @keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .result-card {
+    text-align: center;
+    padding: 50px 70px;
+    border-radius: 20px;
+    animation: resultBounce 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    position: relative;
+  }
+
+  @keyframes resultBounce {
+    0% { transform: scale(0) rotate(-10deg); }
+    60% { transform: scale(1.1) rotate(3deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  .result-card.gold {
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    box-shadow: 0 0 80px rgba(255,215,0,0.8);
+  }
+  .result-card.silver {
+    background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+    box-shadow: 0 0 60px rgba(192,192,192,0.8);
+  }
+  .result-card.special {
+    background: linear-gradient(135deg, #e040fb, #7c4dff);
+    box-shadow: 0 0 80px rgba(224,64,251,0.8);
+  }
+  .result-card.bronze {
+    background: linear-gradient(135deg, #cd7f32, #e8a850);
+    box-shadow: 0 0 40px rgba(205,127,50,0.6);
+  }
+
+  .result-emoji {
+    font-size: 5em;
+    margin-bottom: 10px;
+    animation: emojiPop 0.8s ease-out 0.3s both;
+  }
+
+  @keyframes emojiPop {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .result-title {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .result-card.gold .result-title { color: #5a3e00; }
+  .result-card.silver .result-title { color: #333; }
+  .result-card.special .result-title { color: #fff; }
+  .result-card.bronze .result-title { color: #4a2800; }
+
+  .result-sub {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    opacity: 0.8;
+  }
+
+  .result-card.special .result-sub { color: #eee; }
+
+  .close-btn {
+    padding: 12px 40px;
+    font-size: 1.1em;
+    border: 2px solid rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.3);
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .close-btn:hover {
+    background: rgba(255,255,255,0.5);
+  }
+
+  /* drum roll text */
+  .drum-text {
+    color: #ffd700;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-top: 20px;
+    min-height: 50px;
+    text-shadow: 0 0 10px #ffd700;
+  }
+
+  /* fake near miss flash */
+  .flash-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .flash-overlay.active { display: block; animation: flashAnim 0.15s; }
+
+  @keyframes flashAnim {
+    0% { background: rgba(255,215,0,0.6); }
+    100% { background: transparent; }
+  }
+
+  /* confetti canvas */
+  #confetti {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  /* Slot-style text cycling */
+  .slot-display {
+    display: none;
+    margin: 20px auto;
+    padding: 15px 30px;
+    background: #111;
+    border: 3px solid #ffd700;
+    border-radius: 15px;
+    min-width: 250px;
+  }
+
+  .slot-display.active { display: block; }
+
+  .slot-text {
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* shaking */
+  .shake {
+    animation: shake 0.1s infinite;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(2px, 1px); }
+    25% { transform: translate(-2px, -1px); }
+    50% { transform: translate(1px, 2px); }
+    75% { transform: translate(-1px, -2px); }
+    100% { transform: translate(2px, -1px); }
+  }
+
+  .lightburst {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,215,0,0.3), transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .lightburst.active {
+    animation: burstAnim 2s ease-out forwards;
+  }
+
+  @keyframes burstAnim {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.3); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(2); }
+  }
+
+  /* near miss label popup */
+  .near-miss-popup {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 60;
+    font-size: 3em;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
+    pointer-events: none;
+  }
+
+  .near-miss-popup.show {
+    display: block;
+    animation: nearMissAnim 1.2s ease-out forwards;
+  }
+
+  @keyframes nearMissAnim {
+    0% { transform: translate(-50%,-50%) scale(0.3); opacity: 0; }
+    30% { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
+    60% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+  <h1>🎰 超ドキドキルーレット 🎰</h1>
+  <p class="subtitle">✨ 運命を決める一回転… あなたの運は？ ✨</p>
+
+  <div class="wheel-container">
+    <div class="wheel-outer"></div>
+    <div class="pointer"></div>
+    <canvas id="wheelCanvas" width="310" height="310"
+      style="position:absolute;top:15px;left:15px;border-radius:50%;
+      transition: transform 4s cubic-bezier(0.17,0.67,0.12,0.99);"></canvas>
+    <div class="center-circle">🎯</div>
+    <div class="lightburst" id="lightburst"></div>
+  </div>
+
+  <div class="slot-display" id="slotDisplay">
+    <div class="slot-text" id="slotText">---</div>
+  </div>
+
+  <button class="spin-btn" id="spinBtn" onclick="startSpin()">
+    🎲 運命を回す！
+  </button>
+
+  <div class="drum-text" id="drumText"></div>
+</div>
+
+<div class="flash-overlay" id="flashOverlay"></div>
+<div class="near-miss-popup" id="nearMissPopup"></div>
+<canvas id="confetti"></canvas>
+
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-card" id="resultCard">
+    <div class="result-emoji" id="resultEmoji"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <button class="close-btn" onclick="closeResult()">もう一回！</button>
+  </div>
+</div>
+
+<script>
+// ---------- Stars ----------
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random()*100+'%';
+  s.style.top = Math.random()*100+'%';
+  s.style.animationDelay = Math.random()*3+'s';
+  s.style.width = s.style.height = (1+Math.random()*3)+'px';
+  starsEl.appendChild(s);
+}
+
+// ---------- Wheel Drawing ----------
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const segments = [
+  { label: '🥇金賞', color: '#ffd700', border: '#b8860b' },
+  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
+  { label: '🌟特別賞', color: '#9c27b0', border: '#6a0080' },
+  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
+  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
+  { label: '🥇金賞', color: '#ffd700', border: '#b8860b' },
+  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
+  { label: '🌟特別賞', color: '#9c27b0', border: '#6a0080' },
+  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
+  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
+];
+const segCount = segments.length;
+const arc = (2*Math.PI)/segCount;
+const radius = 155;
+
+function drawWheel() {
+  ctx.clearRect(0,0,310,310);
+  for (let i = 0; i < segCount; i++) {
+    const angle = arc*i - Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(155,155);
+    ctx.arc(155,155,radius,angle,angle+arc);
+    ctx.closePath();
+
+    const grad = ctx.createRadialGradient(155,155,30,155,155,radius);
+    grad.addColorStop(0, lightenColor(segments[i].color, 40));
+    grad.addColorStop(1, segments[i].color);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.strokeStyle = segments[i].border;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // label
+    ctx.save();
+    ctx.translate(155,155);
+    ctx.rotate(angle + arc/2);
+    ctx.fillStyle = i===0||i===5 ? '#5a3e00' : '#fff';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(segments[i].label, radius*0.62, 0);
+    ctx.restore();
+  }
+  // inner ring
+  ctx.beginPath();
+  ctx.arc(155,155,32,0,2*Math.PI);
+  ctx.fillStyle = '#222';
+  ctx.fill();
+}
+
+function lightenColor(hex, amt) {
+  let r = parseInt(hex.slice(1,3),16);
+  let g = parseInt(hex.slice(3,5),16);
+  let b = parseInt(hex.slice(5,7),16);
+  r = Math.min(255, r+amt);
+  g = Math.min(255, g+amt);
+  b = Math.min(255, b+amt);
+  return `rgb(${r},${g},${b})`;
+}
+
+drawWheel();
+
+// ---------- Determine result (hidden probabilities) ----------
+function getResult() {
+  const r = Math.random()*100;
+  // 金賞 0%, 銀賞 30%, 特別賞 10%, 銅賞 60%
+  if (r < 30) return 'silver';
+  if (r < 40) return 'special';
+  return 'bronze';
+}
+
+// Map result to angle range on the wheel
+// Segment indices:
+// 0: 金賞   (0-36°)
+// 1: 銀賞   (36-72°)
+// 2: 特別賞 (72-108°)
+// 3: 銅賞   (108-144°)
+// 4: 銀賞   (144-180°)
+// 5: 金賞   (180-216°)
+// 6: 銅賞   (216-252°)
+// 7: 特別賞 (252-288°)
+// 8: 銀賞   (288-324°)
+// 9: 銅賞   (324-360°)
+
+function getTargetAngle(result) {
+  const segMap = {
+    gold: [0, 5],
+    silver: [1, 4, 8],
+    special: [2, 7],
+    bronze: [3, 6, 9]
+  };
+  const segs = segMap[result];
+  const chosen = segs[Math.floor(Math.random()*segs.length)];
+  // The pointer is at top (270° in standard, or 0° in our rotated system)
+  // segment i occupies from i*36° to (i+1)*36° from the top going clockwise
+  // to land on segment i, wheel must rotate so that segment i is at the top
+  // wheel rotation: spin is clockwise, segment 0 starts at top
+  // to land on segment i: targetDeg = 360 - (i*36 + random_within_segment)
+  const segDeg = 36;
+  const withinSeg = 5 + Math.random()*(segDeg - 10); // avoid edges
+  const targetDeg = 360 - (chosen * segDeg + withinSeg);
+  return targetDeg;
+}
+
+// ---------- Spin Logic ----------
+let currentRotation = 0;
+let spinning = false;
+
+// Audio context for sounds
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTick() {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 800 + Math.random()*400;
+    osc.type = 'square';
+    gain.gain.value = 0.05;
+    osc.start();
+    osc.stop(ctx.currentTime + 0.03);
+  } catch(e) {}
+}
+
+function playDrumRoll() {
+  try {
+    const ctx = getAudioCtx();
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 100 + Math.random()*100;
+        osc.type = 'triangle';
+        gain.gain.value = 0.03;
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
+      }, i * 50);
+    }
+  } catch(e) {}
+}
+
+function playFanfare() {
+  try {
+    const ctx = getAudioCtx();
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => {
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.value = 0.08;
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+      }, i * 200);
+    });
+  } catch(e) {}
+}
+
+const drumText = document.getElementById('drumText');
+const slotDisplay = document.getElementById('slotDisplay');
+const slotText = document.getElementById('slotText');
+const spinBtn = document.getElementById('spinBtn');
+
+const prizes = ['🥇 金賞', '🥈 銀賞', '🌟 特別賞', '🥉 銅賞'];
+
+async function startSpin() {
+  if (spinning) return;
+  spinning = true;
+  spinBtn.disabled = true;
+
+  const result = getResult();
+  const targetAngle = getTargetAngle(result);
+  const totalSpin = 360 * (5 + Math.floor(Math.random()*3)) + targetAngle;
+
+  drumText.textContent = '';
+
+  // Phase 1: Dramatic countdown
+  drumText.textContent = '運命の歯車が動き出す…';
+  await sleep(800);
+
+  // Phase 2: Spin the wheel
+  drumText.textContent = '回れ──────！！';
+  playDrumRoll();
+
+  currentRotation += totalSpin;
+  canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+  // tick sounds during spin
+  let tickInterval = setInterval(playTick, 100);
+
+  // slot display cycling
+  slotDisplay.classList.add('active');
+  let slotInterval = setInterval(() => {
+    slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
+  }, 80);
+
+  // Near miss fake-out at 2.5 seconds
+  setTimeout(() => {
+    // Always flash gold briefly for excitement
+    const flashEl = document.getElementById('flashOverlay');
+    flashEl.classList.add('active');
+    setTimeout(() => flashEl.classList.remove('active'), 150);
+
+    const nearMiss = document.getElementById('nearMissPopup');
+    nearMiss.textContent = '🥇 金賞!?';
+    nearMiss.classList.add('show');
+    setTimeout(() => nearMiss.classList.remove('show'), 1200);
+  }, 2500);
+
+  // Slow down slot text
+  setTimeout(() => {
+    clearInterval(slotInterval);
+    slotInterval = setInterval(() => {
+      slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
+    }, 200);
+  }, 3000);
+
+  setTimeout(() => {
+    clearInterval(slotInterval);
+    slotInterval = setInterval(() => {
+      slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
+    }, 400);
+  }, 3500);
+
+  // Wheel stops around 4s
+  await sleep(4000);
+  clearInterval(tickInterval);
+  clearInterval(slotInterval);
+
+  // Phase 3: Dramatic pause
+  slotText.textContent = '？？？';
+  drumText.textContent = '';
+  await sleep(500);
+  drumText.textContent = 'ドキドキ…';
+  await sleep(600);
+  drumText.textContent = 'ドキドキドキ…！';
+  document.querySelector('.wheel-container').classList.add('shake');
+  await sleep(800);
+  document.querySelector('.wheel-container').classList.remove('shake');
+
+  drumText.textContent = '結果は───';
+  await sleep(1000);
+
+  // Lightburst
+  document.getElementById('lightburst').classList.add('active');
+
+  // Show actual result
+  slotDisplay.classList.remove('active');
+  drumText.textContent = '';
+
+  showResult(result);
+  playFanfare();
+
+  setTimeout(() => {
+    document.getElementById('lightburst').classList.remove('active');
+  }, 2000);
+
+  spinning = false;
+  spinBtn.disabled = false;
+}
+
+function showResult(result) {
+  const overlay = document.getElementById('resultOverlay');
+  const card = document.getElementById('resultCard');
+  const emoji = document.getElementById('resultEmoji');
+  const title = document.getElementById('resultTitle');
+  const sub = document.getElementById('resultSub');
+
+  card.className = 'result-card';
+
+  const data = {
+    gold: {
+      class: 'gold',
+      emoji: '👑🥇👑',
+      title: '🎊 金 賞 🎊',
+      sub: '超超超レア！！ おめでとう！！！'
+    },
+    silver: {
+      class: 'silver',
+      emoji: '✨🥈✨',
+      title: '🎉 銀 賞 🎉',
+      sub: 'すごい！銀賞おめでとう！'
+    },
+    special: {
+      class: 'special',
+      emoji: '🌟💫🌟',
+      title: '⚡ 特 別 賞 ⚡',
+      sub: '何かが起こる…！？スペシャルおめでとう！'
+    },
+    bronze: {
+      class: 'bronze',
+      emoji: '🎊🥉🎊',
+      title: '🏅 銅 賞 🏅',
+      sub: '銅賞ゲット！次は上を目指せ！'
+    }
+  };
+
+  const d = data[result];
+  card.classList.add(d.class);
+  emoji.textContent = d.emoji;
+  title.textContent = d.title;
+  sub.textContent = d.sub;
+  overlay.classList.add('show');
+
+  // Confetti for silver/special/gold
+  if (result !== 'bronze') {
+    launchConfetti();
+  }
+}
+
+function closeResult() {
+  document.getElementById('resultOverlay').classList.remove('show');
+  drumText.textContent = '';
+  stopConfetti();
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+// ---------- Confetti ----------
+const confettiCanvas = document.getElementById('confetti');
+const cctx = confettiCanvas.getContext('2d');
+let confettiPieces = [];
+let confettiAnim;
+
+function resizeConfetti() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeConfetti);
+resizeConfetti();
+
+function launchConfetti() {
+  confettiPieces = [];
+  for (let i = 0; i < 150; i++) {
+    confettiPieces.push({
+      x: Math.random()*confettiCanvas.width,
+      y: Math.random()*confettiCanvas.height - confettiCanvas.height,
+      w: 5+Math.random()*8,
+      h: 10+Math.random()*8,
+      color: `hsl(${Math.random()*360},90%,60%)`,
+      speed: 2+Math.random()*4,
+      angle: Math.random()*2*Math.PI,
+      spin: (Math.random()-0.5)*0.2,
+      drift: (Math.random()-0.5)*2
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  cctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiPieces.forEach(p => {
+    p.y += p.speed;
+    p.x += p.drift;
+    p.angle += p.spin;
+    cctx.save();
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.angle);
+    cctx.fillStyle = p.color;
+    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    cctx.restore();
+  });
+  confettiAnim = requestAnimationFrame(animateConfetti);
+}
+
+function stopConfetti() {
+  cancelAnimationFrame(confettiAnim);
+  cctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiPieces = [];
+}
+</script>
+</body>
+</html>
