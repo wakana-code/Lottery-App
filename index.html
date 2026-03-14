@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎰 超ドキドキルーレット 🎰</title>
+<title>🎊 ガラガラ福引き抽選器 🎊</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -13,202 +13,313 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #0a0a2e;
-    font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+    font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
     overflow: hidden;
-  }
-
-  .stars {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .star {
-    position: absolute;
-    width: 3px; height: 3px;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 2s infinite alternate;
-  }
-
-  @keyframes twinkle {
-    0% { opacity: 0.2; }
-    100% { opacity: 1; }
-  }
-
-  .container {
-    position: relative;
-    z-index: 1;
-    text-align: center;
+    user-select: none;
   }
 
   h1 {
     color: #ffd700;
-    font-size: 2.2em;
-    margin-bottom: 8px;
-    text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
-    animation: titleGlow 2s ease-in-out infinite alternate;
+    font-size: 2em;
+    margin-bottom: 5px;
+    text-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00;
+    animation: glow 2s ease-in-out infinite alternate;
   }
 
-  @keyframes titleGlow {
-    0% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00; }
-    100% { text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00, 0 0 80px #ff4500; }
+  @keyframes glow {
+    from { text-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00; }
+    to { text-shadow: 0 0 25px #ffd700, 0 0 50px #ff8c00, 0 0 70px #ff4500; }
   }
 
-  .subtitle {
-    color: #aaa;
-    font-size: 0.95em;
-    margin-bottom: 25px;
-  }
+  .sub { color: #ccc; margin-bottom: 25px; font-size: 0.95em; }
 
-  .wheel-wrapper {
+  /* ===== 抽選器本体 ===== */
+  .galagala {
     position: relative;
-    width: 340px;
-    height: 340px;
-    margin: 0 auto 20px;
+    width: 320px;
+    height: 420px;
+    margin-bottom: 15px;
   }
 
-  .wheel-border {
+  /* 台座 */
+  .stand {
     position: absolute;
-    width: 340px; height: 340px;
-    border-radius: 50%;
-    background: conic-gradient(
-      #ffd700 0deg 6deg, #1a1a4e 6deg 9deg,
-      #ffd700 9deg 15deg, #1a1a4e 15deg 18deg,
-      #ffd700 18deg 24deg, #1a1a4e 24deg 27deg,
-      #ffd700 27deg 33deg, #1a1a4e 33deg 36deg,
-      #ffd700 36deg 42deg, #1a1a4e 42deg 45deg,
-      #ffd700 45deg 51deg, #1a1a4e 51deg 54deg,
-      #ffd700 54deg 60deg, #1a1a4e 60deg 63deg,
-      #ffd700 63deg 69deg, #1a1a4e 69deg 72deg,
-      #ffd700 72deg 78deg, #1a1a4e 78deg 81deg,
-      #ffd700 81deg 87deg, #1a1a4e 87deg 90deg,
-      #ffd700 90deg 96deg, #1a1a4e 96deg 99deg,
-      #ffd700 99deg 105deg, #1a1a4e 105deg 108deg,
-      #ffd700 108deg 114deg, #1a1a4e 114deg 117deg,
-      #ffd700 117deg 123deg, #1a1a4e 123deg 126deg,
-      #ffd700 126deg 132deg, #1a1a4e 132deg 135deg,
-      #ffd700 135deg 141deg, #1a1a4e 141deg 144deg,
-      #ffd700 144deg 150deg, #1a1a4e 150deg 153deg,
-      #ffd700 153deg 159deg, #1a1a4e 159deg 162deg,
-      #ffd700 162deg 168deg, #1a1a4e 168deg 171deg,
-      #ffd700 171deg 177deg, #1a1a4e 177deg 180deg,
-      #ffd700 180deg 186deg, #1a1a4e 186deg 189deg,
-      #ffd700 189deg 195deg, #1a1a4e 195deg 198deg,
-      #ffd700 198deg 204deg, #1a1a4e 204deg 207deg,
-      #ffd700 207deg 213deg, #1a1a4e 213deg 216deg,
-      #ffd700 216deg 222deg, #1a1a4e 222deg 225deg,
-      #ffd700 225deg 231deg, #1a1a4e 231deg 234deg,
-      #ffd700 234deg 240deg, #1a1a4e 240deg 243deg,
-      #ffd700 243deg 249deg, #1a1a4e 249deg 252deg,
-      #ffd700 252deg 258deg, #1a1a4e 258deg 261deg,
-      #ffd700 261deg 267deg, #1a1a4e 267deg 270deg,
-      #ffd700 270deg 276deg, #1a1a4e 276deg 279deg,
-      #ffd700 279deg 285deg, #1a1a4e 285deg 288deg,
-      #ffd700 288deg 294deg, #1a1a4e 294deg 297deg,
-      #ffd700 297deg 303deg, #1a1a4e 303deg 306deg,
-      #ffd700 306deg 312deg, #1a1a4e 312deg 315deg,
-      #ffd700 315deg 321deg, #1a1a4e 321deg 324deg,
-      #ffd700 324deg 330deg, #1a1a4e 330deg 333deg,
-      #ffd700 333deg 339deg, #1a1a4e 339deg 342deg,
-      #ffd700 342deg 348deg, #1a1a4e 348deg 351deg,
-      #ffd700 351deg 357deg, #1a1a4e 357deg 360deg
-    );
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-    animation: borderSpin 20s linear infinite;
-  }
-
-  @keyframes borderSpin {
-    to { transform: rotate(360deg); }
-  }
-
-  .pointer {
-    position: absolute;
-    top: -12px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 20;
-    width: 0; height: 0;
-    border-left: 16px solid transparent;
-    border-right: 16px solid transparent;
-    border-top: 32px solid #ff1744;
-    filter: drop-shadow(0 0 8px #ff1744) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+    width: 200px;
+    height: 30px;
+    background: linear-gradient(to bottom, #8B5E3C, #6B3A1F);
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   }
 
-  .wheel-spin-area {
+  .stand-leg-l, .stand-leg-r {
     position: absolute;
-    top: 15px; left: 15px;
-    width: 310px; height: 310px;
-    border-radius: 50%;
+    bottom: 30px;
+    width: 14px;
+    height: 60px;
+    background: linear-gradient(to right, #7B4E2C, #9B6E4C, #7B4E2C);
+    border-radius: 3px;
+  }
+  .stand-leg-l { left: 110px; }
+  .stand-leg-r { right: 110px; }
+
+  /* 木箱（六角形っぽい八角形の回転する箱） */
+  .box-container {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 160px;
+  }
+
+  .box {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    transform-origin: center center;
+    transition: transform 0.1s;
+  }
+
+  .box-body {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(145deg, #d4a055, #b8862d, #9a6b20);
+    border-radius: 18px;
+    border: 4px solid #6B3A1F;
+    box-shadow:
+      inset 0 0 20px rgba(0,0,0,0.3),
+      0 5px 20px rgba(0,0,0,0.4);
     overflow: hidden;
   }
 
-  #wheelCanvas {
-    display: block;
-    border-radius: 50%;
-    transition: none;
+  /* 木目模様 */
+  .box-body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 12px,
+      rgba(0,0,0,0.06) 12px,
+      rgba(0,0,0,0.06) 14px
+    );
   }
 
-  .center-dot {
+  .box-body::after {
+    content: '福';
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 50px; height: 50px;
-    background: radial-gradient(circle, #fff 60%, #ccc);
-    border-radius: 50%;
-    z-index: 15;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3em;
+    font-size: 3em;
+    color: #8b0000;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    opacity: 0.7;
   }
 
-  .lightburst {
+  /* 金属の帯 */
+  .band-h {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,215,0,0.4), transparent 70%);
-    pointer-events: none;
-    opacity: 0;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 140px; height: 10px;
+    background: linear-gradient(to bottom, #ddd, #888, #ddd);
+    border-radius: 2px;
     z-index: 2;
   }
 
-  .lightburst.active {
-    animation: burstAnim 2s ease-out forwards;
+  .band-v {
+    position: absolute;
+    left: 50%; top: 10px;
+    transform: translateX(-50%);
+    width: 10px; height: 140px;
+    background: linear-gradient(to right, #ddd, #888, #ddd);
+    border-radius: 2px;
+    z-index: 2;
   }
 
-  @keyframes burstAnim {
-    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.3); }
-    30% { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(2); }
+  /* ハンドル */
+  .handle-axis {
+    position: absolute;
+    top: 50%;
+    right: -55px;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 8px;
+    background: linear-gradient(to bottom, #bbb, #777);
+    border-radius: 3px;
+    z-index: 3;
+    transform-origin: left center;
   }
 
-  .slot-display {
-    display: none;
-    margin: 15px auto;
-    padding: 12px 25px;
-    background: #111;
-    border: 3px solid #ffd700;
-    border-radius: 12px;
-    min-width: 220px;
+  .handle-knob {
+    position: absolute;
+    right: -14px;
+    top: -10px;
+    width: 28px;
+    height: 28px;
+    background: radial-gradient(circle at 35% 35%, #ff4444, #cc0000, #880000);
+    border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
   }
 
-  .slot-display.active { display: block; }
-
-  .slot-text {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
+  /* 玉が出る穴 */
+  .exit-hole {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 20px;
+    background: #1a0a0a;
+    border-radius: 0 0 18px 18px;
+    border: 3px solid #6B3A1F;
+    border-top: none;
+    z-index: 4;
   }
 
+  /* 滑り台（スロープ） */
+  .slope {
+    position: absolute;
+    top: 240px;
+    left: 50%;
+    transform: translateX(-50%) rotate(12deg);
+    width: 160px;
+    height: 14px;
+    background: linear-gradient(to bottom, #c49a5a, #a07830);
+    border-radius: 4px;
+    border: 2px solid #6B3A1F;
+    transform-origin: left center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  }
+
+  .slope-end {
+    position: absolute;
+    top: 253px;
+    right: 60px;
+    width: 30px;
+    height: 18px;
+    background: linear-gradient(to bottom, #c49a5a, #a07830);
+    border-radius: 0 0 8px 8px;
+    border: 2px solid #6B3A1F;
+    border-top: none;
+  }
+
+  /* 玉受け皿 */
+  .tray {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 50px;
+    background: linear-gradient(to bottom, #c49a5a, #8B5E3C);
+    border-radius: 0 0 20px 20px;
+    border: 3px solid #6B3A1F;
+    border-top: 2px solid #a07830;
+    box-shadow: inset 0 5px 15px rgba(0,0,0,0.3), 0 3px 10px rgba(0,0,0,0.3);
+  }
+
+  /* ===== 玉 ===== */
+  .ball {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    z-index: 10;
+    opacity: 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  }
+
+  .ball.gold {
+    background: radial-gradient(circle at 35% 35%, #fff5a0, #ffd700, #b8860b);
+  }
+  .ball.silver {
+    background: radial-gradient(circle at 35% 35%, #fff, #c0c0c0, #808080);
+  }
+  .ball.special {
+    background: radial-gradient(circle at 35% 35%, #f0a0ff, #a020f0, #6a0dad);
+  }
+  .ball.bronze {
+    background: radial-gradient(circle at 35% 35%, #f0c080, #cd7f32, #8b4513);
+  }
+
+  .ball .ball-shine {
+    position: absolute;
+    top: 5px; left: 7px;
+    width: 10px; height: 7px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+  }
+
+  /* 玉アニメーション */
+  .ball.anim-drop {
+    opacity: 1;
+    animation: ballDrop 0.6s ease-in forwards;
+  }
+
+  @keyframes ballDrop {
+    0%   { top: 200px; left: 152px; opacity: 1; }
+    40%  { top: 240px; left: 160px; }
+    100% { top: 258px; left: 195px; }
+  }
+
+  .ball.anim-roll {
+    opacity: 1;
+    animation: ballRoll 0.8s ease-out forwards;
+  }
+
+  @keyframes ballRoll {
+    0%   { top: 258px; left: 195px; transform: rotate(0deg); }
+    50%  { top: 300px; left: 180px; transform: rotate(180deg); }
+    100% { top: 340px; left: 160px; transform: rotate(360deg); }
+  }
+
+  .ball.anim-land {
+    opacity: 1;
+    animation: ballLand 0.5s cubic-bezier(0.3, 1.5, 0.6, 1) forwards;
+  }
+
+  @keyframes ballLand {
+    0%   { top: 340px; left: 160px; transform: scale(1); }
+    50%  { top: 348px; left: 160px; transform: scale(1.15, 0.85); }
+    100% { top: 345px; left: 160px; transform: scale(1); }
+  }
+
+  /* 箱の揺れ */
+  .box.shaking {
+    animation: boxShake 0.08s infinite;
+  }
+
+  @keyframes boxShake {
+    0%   { transform: translate(2px, 1px) rotate(1deg); }
+    25%  { transform: translate(-2px, -1px) rotate(-1deg); }
+    50%  { transform: translate(1px, 2px) rotate(0.5deg); }
+    75%  { transform: translate(-1px, -2px) rotate(-0.5deg); }
+    100% { transform: translate(2px, -1px) rotate(1deg); }
+  }
+
+  /* ハンドル回転 */
+  .handle-axis.spinning {
+    animation: handleSpin 0.3s linear infinite;
+  }
+
+  @keyframes handleSpin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to   { transform: translateY(-50%) rotate(360deg); }
+  }
+
+  /* ===== ボタン ===== */
   .spin-btn {
-    padding: 16px 55px;
+    padding: 16px 50px;
     font-size: 1.3em;
     font-weight: bold;
     color: #fff;
@@ -220,6 +331,7 @@
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
+    z-index: 20;
   }
 
   .spin-btn:hover:not(:disabled) {
@@ -243,21 +355,23 @@
   }
 
   @keyframes btnShine {
-    0% { transform: translateX(-100%) rotate(45deg); }
+    0%   { transform: translateX(-100%) rotate(45deg); }
     100% { transform: translateX(100%) rotate(45deg); }
   }
 
-  .drum-text {
+  /* メッセージ */
+  .msg {
     color: #ffd700;
-    font-size: 1.5em;
+    font-size: 1.4em;
     font-weight: bold;
     margin-top: 15px;
     min-height: 45px;
     text-shadow: 0 0 10px #ffd700;
+    z-index: 20;
   }
 
-  /* Result overlay */
-  .result-overlay {
+  /* ===== 結果オーバーレイ ===== */
+  .overlay {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -267,74 +381,46 @@
     background: rgba(0,0,0,0.85);
   }
 
-  .result-overlay.show {
-    display: flex;
-    animation: fadeIn 0.5s;
-  }
+  .overlay.show { display: flex; animation: fadeIn 0.5s; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   .result-card {
     text-align: center;
-    padding: 45px 60px;
+    padding: 45px 55px;
     border-radius: 20px;
-    animation: resultPop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    animation: cardPop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    max-width: 90vw;
   }
 
-  @keyframes resultPop {
-    0% { transform: scale(0) rotate(-10deg); }
-    60% { transform: scale(1.1) rotate(3deg); }
+  @keyframes cardPop {
+    0%   { transform: scale(0) rotate(-10deg); }
+    60%  { transform: scale(1.1) rotate(3deg); }
     100% { transform: scale(1) rotate(0); }
   }
 
-  .result-card.silver {
-    background: linear-gradient(135deg, #b0b0b0, #e8e8e8);
-    box-shadow: 0 0 60px rgba(192,192,192,0.8);
-  }
-  .result-card.special {
-    background: linear-gradient(135deg, #e040fb, #7c4dff);
-    box-shadow: 0 0 80px rgba(224,64,251,0.8);
-  }
-  .result-card.bronze {
-    background: linear-gradient(135deg, #cd7f32, #e8a850);
-    box-shadow: 0 0 40px rgba(205,127,50,0.6);
-  }
+  .result-card.silver  { background: linear-gradient(135deg, #b0b0b0, #e8e8e8); box-shadow: 0 0 60px rgba(192,192,192,0.8); }
+  .result-card.special { background: linear-gradient(135deg, #e040fb, #7c4dff); box-shadow: 0 0 80px rgba(224,64,251,0.8); }
+  .result-card.bronze  { background: linear-gradient(135deg, #cd7f32, #e8a850); box-shadow: 0 0 40px rgba(205,127,50,0.6); }
 
-  .result-emoji {
-    font-size: 4.5em;
-    margin-bottom: 10px;
-    animation: emojiPop 0.8s ease-out 0.3s both;
-  }
+  .r-emoji { font-size: 4em; margin-bottom: 10px; animation: emojiPop 0.8s ease-out 0.3s both; }
 
   @keyframes emojiPop {
-    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
     100% { transform: scale(1) rotate(0); opacity: 1; }
   }
 
-  .result-title {
-    font-size: 2.8em;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
+  .r-title { font-size: 2.5em; font-weight: bold; margin-bottom: 5px; }
+  .result-card.silver .r-title  { color: #333; }
+  .result-card.special .r-title { color: #fff; }
+  .result-card.bronze .r-title  { color: #4a2800; }
 
-  .result-card.silver .result-title { color: #333; }
-  .result-card.special .result-title { color: #fff; }
-  .result-card.bronze .result-title { color: #4a2800; }
-
-  .result-sub {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-    opacity: 0.8;
-  }
-
-  .result-card.special .result-sub { color: #eee; }
+  .r-sub { font-size: 1.1em; margin-bottom: 20px; opacity: 0.8; }
+  .result-card.special .r-sub { color: #eee; }
 
   .close-btn {
     padding: 12px 35px;
-    font-size: 1.05em;
+    font-size: 1em;
     border: 2px solid rgba(0,0,0,0.3);
     background: rgba(255,255,255,0.3);
     border-radius: 30px;
@@ -342,65 +428,9 @@
     font-weight: bold;
     transition: 0.3s;
   }
-  .close-btn:hover {
-    background: rgba(255,255,255,0.5);
-  }
+  .close-btn:hover { background: rgba(255,255,255,0.5); }
 
-  .flash-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 50;
-    pointer-events: none;
-  }
-
-  .flash-overlay.active {
-    display: block;
-    animation: flashAnim 0.15s;
-  }
-
-  @keyframes flashAnim {
-    0% { background: rgba(255,215,0,0.5); }
-    100% { background: transparent; }
-  }
-
-  .near-miss-popup {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 60;
-    font-size: 2.8em;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
-    pointer-events: none;
-  }
-
-  .near-miss-popup.show {
-    display: block;
-    animation: nearMissAnim 1.2s ease-out forwards;
-  }
-
-  @keyframes nearMissAnim {
-    0% { transform: translate(-50%,-50%) scale(0.3); opacity: 0; }
-    30% { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
-    60% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
-  }
-
-  .shake {
-    animation: shake 0.08s infinite;
-  }
-
-  @keyframes shake {
-    0% { transform: translate(2px, 1px); }
-    25% { transform: translate(-2px, -1px); }
-    50% { transform: translate(1px, 2px); }
-    75% { transform: translate(-1px, -2px); }
-    100% { transform: translate(2px, -1px); }
-  }
-
+  /* 紙吹雪 */
   #confetti {
     position: fixed;
     top: 0; left: 0;
@@ -408,135 +438,201 @@
     pointer-events: none;
     z-index: 99;
   }
+
+  /* 中のカラカラ玉たち */
+  .inner-balls {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 140px; height: 140px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .inner-ball {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    opacity: 0.85;
+  }
+
+  .box.shaking .inner-ball {
+    animation: innerBounce 0.12s infinite;
+  }
+
+  @keyframes innerBounce {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(3px, -4px); }
+    50%  { transform: translate(-2px, 3px); }
+    75%  { transform: translate(4px, 2px); }
+    100% { transform: translate(-3px, -2px); }
+  }
+
+  /* 効果パーティクル */
+  .sparkle {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 30;
+    opacity: 0;
+  }
+
+  .sparkle.pop {
+    animation: sparklePop 0.8s ease-out forwards;
+  }
+
+  @keyframes sparklePop {
+    0%   { opacity: 1; transform: scale(0) translate(0, 0); }
+    100% { opacity: 0; transform: scale(1.5) translate(var(--tx), var(--ty)); }
+  }
+
+  /* near miss */
+  .near-miss {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 60;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
+    pointer-events: none;
+  }
+
+  .near-miss.show {
+    display: block;
+    animation: nearMiss 1.2s ease-out forwards;
+  }
+
+  @keyframes nearMiss {
+    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0; }
+    30%  { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
+    60%  { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+  }
+
+  .flash {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .flash.active {
+    display: block;
+    animation: flashAnim 0.2s;
+  }
+
+  @keyframes flashAnim {
+    0%   { background: rgba(255,255,255,0.5); }
+    100% { background: transparent; }
+  }
+
+  /* カラカラ音テキスト */
+  .karakara-text {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ff8c00;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 25;
+  }
+
+  .karakara-text.show {
+    animation: karkaraFloat 1.5s ease-out forwards;
+  }
+
+  @keyframes karkaraFloat {
+    0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+  }
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
+<h1>🎊 ガラガラ福引き 🎊</h1>
+<p class="sub">✨ ハンドルを回して運試し！ ✨</p>
 
-<div class="container">
-  <h1>🎰 超ドキドキルーレット 🎰</h1>
-  <p class="subtitle">✨ 運命の一回転… あなたの運試し！ ✨</p>
+<div class="galagala" id="galagala">
+  <!-- 脚 -->
+  <div class="stand-leg-l"></div>
+  <div class="stand-leg-r"></div>
 
-  <div class="wheel-wrapper" id="wheelWrapper">
-    <div class="wheel-border"></div>
-    <div class="pointer"></div>
-    <div class="wheel-spin-area">
-      <canvas id="wheelCanvas" width="310" height="310"></canvas>
+  <!-- 箱 -->
+  <div class="box-container">
+    <div class="box" id="box">
+      <div class="box-body">
+        <div class="inner-balls" id="innerBalls"></div>
+      </div>
+      <div class="band-h"></div>
+      <div class="band-v"></div>
+      <div class="exit-hole"></div>
+
+      <!-- ハンドル -->
+      <div class="handle-axis" id="handle">
+        <div class="handle-knob"></div>
+      </div>
     </div>
-    <div class="center-dot">🎯</div>
-    <div class="lightburst" id="lightburst"></div>
   </div>
 
-  <div class="slot-display" id="slotDisplay">
-    <div class="slot-text" id="slotText">---</div>
-  </div>
+  <!-- スロープ -->
+  <div class="slope"></div>
+  <div class="slope-end"></div>
 
-  <button class="spin-btn" id="spinBtn" onclick="startSpin()">🎲 運命を回す！</button>
+  <!-- 皿 -->
+  <div class="tray"></div>
 
-  <div class="drum-text" id="drumText"></div>
+  <!-- 台 -->
+  <div class="stand"></div>
+
+  <!-- 出てくる玉 -->
+  <div class="ball" id="resultBall"><div class="ball-shine"></div></div>
 </div>
 
-<div class="flash-overlay" id="flashOverlay"></div>
-<div class="near-miss-popup" id="nearMissPopup"></div>
+<button class="spin-btn" id="spinBtn" onclick="doGalagala()">🎲 ガラガラ回す！</button>
+<div class="msg" id="msg"></div>
+
+<div class="near-miss" id="nearMiss"></div>
+<div class="flash" id="flash"></div>
 <canvas id="confetti"></canvas>
 
-<div class="result-overlay" id="resultOverlay">
+<div class="overlay" id="overlay">
   <div class="result-card" id="resultCard">
-    <div class="result-emoji" id="resultEmoji"></div>
-    <div class="result-title" id="resultTitle"></div>
-    <div class="result-sub" id="resultSub"></div>
+    <div class="r-emoji" id="rEmoji"></div>
+    <div class="r-title" id="rTitle"></div>
+    <div class="r-sub" id="rSub"></div>
     <button class="close-btn" onclick="closeResult()">もう一回！</button>
   </div>
 </div>
 
 <script>
-// ===== 星背景 =====
-const starsEl = document.getElementById('stars');
-for (let i = 0; i < 80; i++) {
-  const s = document.createElement('div');
-  s.className = 'star';
-  s.style.left = Math.random() * 100 + '%';
-  s.style.top = Math.random() * 100 + '%';
-  s.style.animationDelay = Math.random() * 3 + 's';
-  s.style.width = s.style.height = (1 + Math.random() * 3) + 'px';
-  starsEl.appendChild(s);
+// 中の玉を描画
+const innerBalls = document.getElementById('innerBalls');
+const ballColors = ['#ffd700','#c0c0c0','#cd7f32','#a020f0','#ffd700','#c0c0c0','#cd7f32','#cd7f32','#c0c0c0','#cd7f32'];
+ballColors.forEach((c, i) => {
+  const b = document.createElement('div');
+  b.className = 'inner-ball';
+  b.style.background = `radial-gradient(circle at 35% 35%, ${lighten(c)}, ${c})`;
+  b.style.left = (15 + Math.random() * 100) + 'px';
+  b.style.top = (15 + Math.random() * 100) + 'px';
+  b.style.animationDelay = (Math.random() * 0.1) + 's';
+  innerBalls.appendChild(b);
+});
+
+function lighten(hex) {
+  const r = Math.min(255, parseInt(hex.slice(1,3),16) + 80);
+  const g = Math.min(255, parseInt(hex.slice(3,5),16) + 80);
+  const bb = Math.min(255, parseInt(hex.slice(5,7),16) + 80);
+  return `rgb(${r},${g},${bb})`;
 }
 
-// ===== セグメント定義 =====
-// 10マス × 36°ずつ
-// 金賞は見えるけど絶対止まらない！
-const segments = [
-  { label: '🥇 金賞',   color1: '#ffe44d', color2: '#ffc800', textColor: '#6b4c00', result: 'gold'    },
-  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
-  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
-  { label: '🌟 特別賞', color1: '#ce6df5', color2: '#8e24aa', textColor: '#fff',    result: 'special' },
-  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
-  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
-  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
-  { label: '🥇 金賞',   color1: '#ffe44d', color2: '#ffc800', textColor: '#6b4c00', result: 'gold'    },
-  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
-  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
-];
-
-const SEG_COUNT = segments.length;
-const SEG_DEG = 360 / SEG_COUNT; // 36°
-const SEG_RAD = (2 * Math.PI) / SEG_COUNT;
-
-// ===== ホイール描画 =====
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-const CX = 155, CY = 155, R = 150;
-
-function drawWheel() {
-  ctx.clearRect(0, 0, 310, 310);
-  for (let i = 0; i < SEG_COUNT; i++) {
-    const startAngle = SEG_RAD * i - Math.PI / 2;
-    const endAngle = startAngle + SEG_RAD;
-    const seg = segments[i];
-
-    // 塗り
-    const grad = ctx.createRadialGradient(CX, CY, 20, CX, CY, R);
-    grad.addColorStop(0, seg.color1);
-    grad.addColorStop(1, seg.color2);
-
-    ctx.beginPath();
-    ctx.moveTo(CX, CY);
-    ctx.arc(CX, CY, R, startAngle, endAngle);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // 境界線
-    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // テキスト
-    ctx.save();
-    ctx.translate(CX, CY);
-    ctx.rotate(startAngle + SEG_RAD / 2);
-    ctx.fillStyle = seg.textColor;
-    ctx.font = 'bold 14px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.5)';
-    ctx.shadowBlur = 3;
-    ctx.fillText(seg.label, R * 0.6, 0);
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  // 中心の暗い円
-  ctx.beginPath();
-  ctx.arc(CX, CY, 27, 0, 2 * Math.PI);
-  ctx.fillStyle = '#1a1a3e';
-  ctx.fill();
-}
-
-drawWheel();
-
-// ===== 確率判定（金賞 0%、銀賞 30%、特別賞 10%、銅賞 60%） =====
+// 確率: 金0%, 銀30%, 特別10%, 銅60%
 function pickResult() {
   const r = Math.random() * 100;
   if (r < 30) return 'silver';
@@ -544,58 +640,12 @@ function pickResult() {
   return 'bronze';
 }
 
-// ===== 結果 → 止まるべき角度を算出 =====
-// ポインターは上（12時方向）に固定
-// ホイールは時計回りに回転（CSS transform rotate の正方向）
-//
-// セグメント i は「ホイール上で 12時方向から時計回りに i*36° ~ (i+1)*36°」
-// ホイールが totalDeg 回転した後、ポインターが指すセグメントは
-//   normalizedDeg = totalDeg % 360
-//   ポインターが指す元の角度 = (360 - normalizedDeg) % 360
-//   segIndex = floor(ポインターが指す元の角度 / 36)
-//
-// 逆算: segIndex i に止めたい場合
-//   i * 36 ≤ (360 - normalizedDeg) % 360 < (i+1) * 36
-//   normalizedDeg = 360 - (i * 36 + offset)   (offset は 0~36 の間、端を避ける)
-
-function calcStopAngle(resultType) {
-  // resultType に該当するセグメントインデックスを集める
-  const candidates = [];
-  for (let i = 0; i < SEG_COUNT; i++) {
-    if (segments[i].result === resultType) candidates.push(i);
-  }
-  // ランダムに一つ選ぶ
-  const segIdx = candidates[Math.floor(Math.random() * candidates.length)];
-
-  // セグメント内のランダム位置（端から5°余裕）
-  const margin = 5;
-  const offset = margin + Math.random() * (SEG_DEG - 2 * margin);
-
-  // normalizedDeg = 360 - (segIdx * SEG_DEG + offset)
-  let normDeg = 360 - (segIdx * SEG_DEG + offset);
-  if (normDeg < 0) normDeg += 360;
-
-  return { normDeg, segIdx };
-}
-
-// ===== 検証: 角度からセグメント取得 =====
-function getSegmentAtAngle(totalDeg) {
-  let norm = totalDeg % 360;
-  if (norm < 0) norm += 360;
-  let pointerAngle = (360 - norm) % 360;
-  if (pointerAngle < 0) pointerAngle += 360;
-  return Math.floor(pointerAngle / SEG_DEG) % SEG_COUNT;
-}
-
-// ===== スピン =====
-let totalRotation = 0;
-let spinning = false;
-
-const drumText = document.getElementById('drumText');
-const slotDisplay = document.getElementById('slotDisplay');
-const slotText = document.getElementById('slotText');
+let busy = false;
+const box = document.getElementById('box');
+const handle = document.getElementById('handle');
+const ball = document.getElementById('resultBall');
+const msg = document.getElementById('msg');
 const spinBtn = document.getElementById('spinBtn');
-const prizes = ['🥇 金賞', '🥈 銀賞', '🌟 特別賞', '🥉 銅賞'];
 
 // 音
 let audioCtx;
@@ -604,27 +654,38 @@ function ac() {
   return audioCtx;
 }
 
-function playTick() {
+function playKara() {
   try {
     const c = ac(), o = c.createOscillator(), g = c.createGain();
     o.connect(g); g.connect(c.destination);
-    o.frequency.value = 600 + Math.random() * 600;
-    o.type = 'square'; g.gain.value = 0.04;
-    o.start(); o.stop(c.currentTime + 0.025);
+    o.frequency.value = 200 + Math.random() * 300;
+    o.type = 'triangle'; g.gain.value = 0.06;
+    o.start(); o.stop(c.currentTime + 0.04);
   } catch(e) {}
 }
 
-function playDrumRoll() {
+function playPon() {
+  try {
+    const c = ac(), o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.frequency.value = 600; o.type = 'sine';
+    g.gain.value = 0.12;
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.4);
+    o.start(); o.stop(c.currentTime + 0.4);
+  } catch(e) {}
+}
+
+function playRoll() {
   try {
     const c = ac();
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 8; i++) {
       setTimeout(() => {
         const o = c.createOscillator(), g = c.createGain();
         o.connect(g); g.connect(c.destination);
-        o.frequency.value = 100 + Math.random() * 100;
-        o.type = 'triangle'; g.gain.value = 0.03;
-        o.start(); o.stop(c.currentTime + 0.05);
-      }, i * 50);
+        o.frequency.value = 300 + i * 50;
+        o.type = 'sine'; g.gain.value = 0.04;
+        o.start(); o.stop(c.currentTime + 0.08);
+      }, i * 80);
     }
   } catch(e) {}
 }
@@ -632,7 +693,7 @@ function playDrumRoll() {
 function playFanfare() {
   try {
     const c = ac();
-    [523, 659, 784, 1047].forEach((f, i) => {
+    [523,659,784,1047].forEach((f,i) => {
       setTimeout(() => {
         const o = c.createOscillator(), g = c.createGain();
         o.connect(g); g.connect(c.destination);
@@ -640,210 +701,231 @@ function playFanfare() {
         g.gain.value = 0.08;
         g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.5);
         o.start(); o.stop(c.currentTime + 0.5);
-      }, i * 200);
+      }, i * 180);
     });
+  } catch(e) {}
+}
+
+function playDrumRoll() {
+  try {
+    const c = ac();
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination);
+        o.frequency.value = 80 + Math.random() * 80;
+        o.type = 'triangle'; g.gain.value = 0.04;
+        o.start(); o.stop(c.currentTime + 0.04);
+      }, i * 40);
+    }
   } catch(e) {}
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function startSpin() {
-  if (spinning) return;
-  spinning = true;
+function showKarakara() {
+  const el = document.createElement('div');
+  el.className = 'karakara-text show';
+  el.textContent = ['ガラ', 'カラ', 'ガラッ', 'カラカラ'][Math.floor(Math.random()*4)];
+  document.getElementById('galagala').appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+function spawnSparkles(x, y, color) {
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle pop';
+    s.style.background = color;
+    s.style.left = x + 'px';
+    s.style.top = y + 'px';
+    const angle = (Math.PI * 2 / 12) * i;
+    const dist = 30 + Math.random() * 40;
+    s.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    s.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    document.getElementById('galagala').appendChild(s);
+    setTimeout(() => s.remove(), 800);
+  }
+}
+
+async function doGalagala() {
+  if (busy) return;
+  busy = true;
   spinBtn.disabled = true;
-  drumText.textContent = '';
+  msg.textContent = '';
 
-  // 1) 結果を先に決定
-  const resultType = pickResult();
-  const { normDeg, segIdx } = calcStopAngle(resultType);
+  // リセット玉
+  ball.className = 'ball';
+  ball.style.opacity = '0';
 
-  // 回転量 = ベース数周 + 着地角度
-  const fullSpins = 360 * (6 + Math.floor(Math.random() * 3)); // 6〜8周
-  const spinAmount = fullSpins + normDeg - (totalRotation % 360);
-  const targetRotation = totalRotation + spinAmount;
+  const result = pickResult();
 
-  // 2) 演出開始
-  drumText.textContent = '運命の歯車が動き出す…';
+  // ---- Phase 1: ガラガラ回す ----
+  msg.textContent = 'ガラガラガラ…！';
+  handle.classList.add('spinning');
+  box.classList.add('shaking');
+
+  let karaInterval = setInterval(() => {
+    playKara();
+    showKarakara();
+  }, 200);
+
+  // ニアミス演出（1.5秒後に金色チラ見せ）
+  setTimeout(() => {
+    const nm = document.getElementById('nearMiss');
+    nm.textContent = '✨金色の玉が見えた…!?✨';
+    nm.classList.add('show');
+    const fl = document.getElementById('flash');
+    fl.classList.add('active');
+    setTimeout(() => { fl.classList.remove('active'); }, 200);
+    setTimeout(() => nm.classList.remove('show'), 1200);
+  }, 1500);
+
+  await sleep(3000);
+
+  // ---- Phase 2: 減速 ----
+  clearInterval(karaInterval);
+  handle.classList.remove('spinning');
+
+  // ゆっくりガタガタ
+  msg.textContent = 'コロコロ…';
+  let slowCount = 0;
+  const slowInterval = setInterval(() => {
+    playKara();
+    slowCount++;
+    if (slowCount >= 5) clearInterval(slowInterval);
+  }, 400);
+
+  await sleep(2000);
+  box.classList.remove('shaking');
+
+  // ---- Phase 3: 玉が出る！ ----
+  msg.textContent = '…！！';
+  playPon();
+  await sleep(400);
+
+  // 玉の色セット
+  ball.classList.remove('gold','silver','special','bronze');
+  ball.classList.add(result);
+
+  // Drop animation
+  ball.classList.add('anim-drop');
+  playRoll();
+  await sleep(600);
+
+  // Roll animation
+  ball.className = `ball ${result} anim-roll`;
   await sleep(800);
 
-  drumText.textContent = '回れ──────！！';
-  playDrumRoll();
-
-  // ホイール回転アニメーション
-  canvas.style.transition = 'transform 5s cubic-bezier(0.15, 0.60, 0.10, 1.00)';
-  canvas.style.transform = `rotate(${targetRotation}deg)`;
-  totalRotation = targetRotation;
-
-  // カチカチ音
-  let tickInterval = setInterval(playTick, 80);
-
-  // スロット風テキスト
-  slotDisplay.classList.add('active');
-  let slotSpeed = 70;
-  let slotTimer = setInterval(() => {
-    slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
-  }, slotSpeed);
-
-  // 2.5秒目: ニアミス演出（金賞がチラッと見える）
-  setTimeout(() => {
-    const flash = document.getElementById('flashOverlay');
-    flash.classList.add('active');
-    setTimeout(() => flash.classList.remove('active'), 150);
-
-    const popup = document.getElementById('nearMissPopup');
-    popup.textContent = '🥇 金賞…!?';
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 1200);
-  }, 2500);
-
-  // 3.5秒目: スロット減速
-  setTimeout(() => {
-    clearInterval(slotTimer);
-    slotTimer = setInterval(() => {
-      slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
-    }, 200);
-  }, 3500);
-
-  // 4.3秒目: さらに減速
-  setTimeout(() => {
-    clearInterval(slotTimer);
-    slotTimer = setInterval(() => {
-      slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
-    }, 400);
-  }, 4300);
-
-  // 5秒: ホイール停止
-  await sleep(5000);
-  clearInterval(tickInterval);
-  clearInterval(slotTimer);
-
-  // 3) 検証（デバッグ）
-  const actualSeg = getSegmentAtAngle(totalRotation);
-  console.log(`狙い: seg${segIdx}(${segments[segIdx].label}), 実際: seg${actualSeg}(${segments[actualSeg].label})`);
-
-  // 4) ドキドキ演出
-  slotText.textContent = '？？？';
-  drumText.textContent = '';
+  // Land animation
+  ball.className = `ball ${result} anim-land`;
   await sleep(500);
-  drumText.textContent = 'ドキドキ…';
-  await sleep(700);
-  drumText.textContent = 'ドキドキドキ…！';
-  document.getElementById('wheelWrapper').classList.add('shake');
-  await sleep(900);
-  document.getElementById('wheelWrapper').classList.remove('shake');
-  drumText.textContent = '結果は───';
-  await sleep(1200);
 
-  // 5) 結果表示
-  document.getElementById('lightburst').classList.add('active');
-  slotDisplay.classList.remove('active');
-  drumText.textContent = '';
+  // スパークル
+  const ballColors2 = {
+    gold: '#ffd700', silver: '#c0c0c0', special: '#a020f0', bronze: '#cd7f32'
+  };
+  spawnSparkles(160, 345, ballColors2[result]);
 
-  showResult(segments[actualSeg].result);
+  // ---- Phase 4: ドラムロール演出 ----
+  msg.textContent = '';
+  await sleep(300);
+  playDrumRoll();
+  msg.textContent = 'ドキドキ…';
+  await sleep(800);
+  msg.textContent = 'ドキドキドキ…！';
+  await sleep(800);
+
+  // フラッシュ
+  const fl = document.getElementById('flash');
+  fl.classList.add('active');
+  setTimeout(() => fl.classList.remove('active'), 200);
+
+  msg.textContent = '結果は───！';
+  await sleep(1000);
+
+  // ---- Phase 5: 結果発表 ----
+  msg.textContent = '';
   playFanfare();
+  showResult(result);
 
-  setTimeout(() => {
-    document.getElementById('lightburst').classList.remove('active');
-  }, 2000);
-
-  spinning = false;
+  busy = false;
   spinBtn.disabled = false;
 }
 
-// ===== 結果表示 =====
 function showResult(result) {
-  const overlay = document.getElementById('resultOverlay');
+  const overlay = document.getElementById('overlay');
   const card = document.getElementById('resultCard');
-  const emoji = document.getElementById('resultEmoji');
-  const title = document.getElementById('resultTitle');
-  const sub = document.getElementById('resultSub');
-
-  card.className = 'result-card';
+  card.className = 'result-card ' + result;
 
   const data = {
-    silver: {
-      cls: 'silver', emoji: '✨🥈✨',
-      title: '🎉 銀 賞 🎉',
-      sub: 'すごい！銀賞おめでとう！'
-    },
-    special: {
-      cls: 'special', emoji: '🌟💫🌟',
-      title: '⚡ 特 別 賞 ⚡',
-      sub: 'スペシャル！何かいいことあるかも…！？'
-    },
-    bronze: {
-      cls: 'bronze', emoji: '🎊🥉🎊',
-      title: '🏅 銅 賞 🏅',
-      sub: '銅賞ゲット！次こそは上を目指せ！'
-    }
+    silver:  { emoji: '✨🥈✨', title: '🎉 銀 賞 🎉', sub: 'すごい！銀の玉が出た！おめでとう！' },
+    special: { emoji: '🌟💫🌟', title: '⚡ 特 別 賞 ⚡', sub: '紫の玉！スペシャルな何かが…！？' },
+    bronze:  { emoji: '🎊🥉🎊', title: '🏅 銅 賞 🏅', sub: '銅の玉ゲット！次はもっと上を！' },
   };
 
   const d = data[result];
-  card.classList.add(d.cls);
-  emoji.textContent = d.emoji;
-  title.textContent = d.title;
-  sub.textContent = d.sub;
+  document.getElementById('rEmoji').textContent = d.emoji;
+  document.getElementById('rTitle').textContent = d.title;
+  document.getElementById('rSub').textContent = d.sub;
   overlay.classList.add('show');
 
   if (result !== 'bronze') launchConfetti();
 }
 
 function closeResult() {
-  document.getElementById('resultOverlay').classList.remove('show');
-  drumText.textContent = '';
+  document.getElementById('overlay').classList.remove('show');
+  msg.textContent = '';
   stopConfetti();
+  // 玉リセット
+  ball.className = 'ball';
+  ball.style.opacity = '0';
 }
 
 // ===== 紙吹雪 =====
-const confettiCanvas = document.getElementById('confetti');
-const cctx = confettiCanvas.getContext('2d');
-let confettiPieces = [], confettiAnim;
+const cc = document.getElementById('confetti');
+const cctx = cc.getContext('2d');
+let confPieces = [], confAnim;
 
-function resizeConfetti() {
-  confettiCanvas.width = window.innerWidth;
-  confettiCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeConfetti);
-resizeConfetti();
+function resizeCC() { cc.width = innerWidth; cc.height = innerHeight; }
+addEventListener('resize', resizeCC);
+resizeCC();
 
 function launchConfetti() {
-  confettiPieces = [];
+  confPieces = [];
   for (let i = 0; i < 150; i++) {
-    confettiPieces.push({
-      x: Math.random() * confettiCanvas.width,
-      y: -20 - Math.random() * confettiCanvas.height,
+    confPieces.push({
+      x: Math.random() * cc.width,
+      y: -20 - Math.random() * cc.height,
       w: 5 + Math.random() * 8,
       h: 10 + Math.random() * 8,
-      color: `hsl(${Math.random() * 360},85%,60%)`,
+      color: `hsl(${Math.random()*360},85%,60%)`,
       speed: 2 + Math.random() * 4,
       angle: Math.random() * Math.PI * 2,
       spin: (Math.random() - 0.5) * 0.2,
       drift: (Math.random() - 0.5) * 2,
     });
   }
-  animateConfetti();
+  animConf();
 }
 
-function animateConfetti() {
-  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-  confettiPieces.forEach(p => {
-    p.y += p.speed;
-    p.x += p.drift;
-    p.angle += p.spin;
+function animConf() {
+  cctx.clearRect(0, 0, cc.width, cc.height);
+  confPieces.forEach(p => {
+    p.y += p.speed; p.x += p.drift; p.angle += p.spin;
     cctx.save();
     cctx.translate(p.x, p.y);
     cctx.rotate(p.angle);
     cctx.fillStyle = p.color;
-    cctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
     cctx.restore();
   });
-  confettiAnim = requestAnimationFrame(animateConfetti);
+  confAnim = requestAnimationFrame(animConf);
 }
 
 function stopConfetti() {
-  cancelAnimationFrame(confettiAnim);
-  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-  confettiPieces = [];
+  cancelAnimationFrame(confAnim);
+  cctx.clearRect(0, 0, cc.width, cc.height);
+  confPieces = [];
 }
 </script>
 </body>
