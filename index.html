@@ -46,8 +46,8 @@
 
   h1 {
     color: #ffd700;
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 2.2em;
+    margin-bottom: 8px;
     text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
     animation: titleGlow 2s ease-in-out infinite alternate;
   }
@@ -59,114 +59,157 @@
 
   .subtitle {
     color: #aaa;
-    font-size: 1em;
-    margin-bottom: 30px;
+    font-size: 0.95em;
+    margin-bottom: 25px;
   }
 
-  .wheel-container {
+  .wheel-wrapper {
     position: relative;
     width: 340px;
     height: 340px;
-    margin: 0 auto 30px;
+    margin: 0 auto 20px;
   }
 
-  .wheel-outer {
+  .wheel-border {
     position: absolute;
     width: 340px; height: 340px;
     border-radius: 50%;
     background: conic-gradient(
-      #ffd700 0deg 10deg, #1a1a4e 10deg 12deg,
-      #ffd700 12deg 22deg, #1a1a4e 22deg 24deg,
-      #ffd700 24deg 34deg, #1a1a4e 34deg 36deg,
-      #ffd700 36deg 46deg, #1a1a4e 46deg 48deg,
-      #ffd700 48deg 58deg, #1a1a4e 58deg 60deg,
-      #ffd700 60deg 70deg, #1a1a4e 70deg 72deg,
-      #ffd700 72deg 82deg, #1a1a4e 82deg 84deg,
-      #ffd700 84deg 94deg, #1a1a4e 94deg 96deg,
-      #ffd700 96deg 106deg, #1a1a4e 106deg 108deg,
-      #ffd700 108deg 118deg, #1a1a4e 118deg 120deg,
-      #ffd700 120deg 130deg, #1a1a4e 130deg 132deg,
-      #ffd700 132deg 142deg, #1a1a4e 142deg 144deg,
-      #ffd700 144deg 154deg, #1a1a4e 154deg 156deg,
-      #ffd700 156deg 166deg, #1a1a4e 166deg 168deg,
-      #ffd700 168deg 178deg, #1a1a4e 178deg 180deg,
-      #ffd700 180deg 190deg, #1a1a4e 190deg 192deg,
-      #ffd700 192deg 202deg, #1a1a4e 202deg 204deg,
-      #ffd700 204deg 214deg, #1a1a4e 214deg 216deg,
-      #ffd700 216deg 226deg, #1a1a4e 226deg 228deg,
-      #ffd700 228deg 238deg, #1a1a4e 238deg 240deg,
-      #ffd700 240deg 250deg, #1a1a4e 250deg 252deg,
-      #ffd700 252deg 262deg, #1a1a4e 262deg 264deg,
-      #ffd700 264deg 274deg, #1a1a4e 274deg 276deg,
-      #ffd700 276deg 286deg, #1a1a4e 286deg 288deg,
-      #ffd700 288deg 298deg, #1a1a4e 298deg 300deg,
-      #ffd700 300deg 310deg, #1a1a4e 310deg 312deg,
-      #ffd700 312deg 322deg, #1a1a4e 322deg 324deg,
-      #ffd700 324deg 334deg, #1a1a4e 334deg 336deg,
-      #ffd700 336deg 346deg, #1a1a4e 346deg 348deg,
-      #ffd700 348deg 358deg, #1a1a4e 358deg 360deg
+      #ffd700 0deg 6deg, #1a1a4e 6deg 9deg,
+      #ffd700 9deg 15deg, #1a1a4e 15deg 18deg,
+      #ffd700 18deg 24deg, #1a1a4e 24deg 27deg,
+      #ffd700 27deg 33deg, #1a1a4e 33deg 36deg,
+      #ffd700 36deg 42deg, #1a1a4e 42deg 45deg,
+      #ffd700 45deg 51deg, #1a1a4e 51deg 54deg,
+      #ffd700 54deg 60deg, #1a1a4e 60deg 63deg,
+      #ffd700 63deg 69deg, #1a1a4e 69deg 72deg,
+      #ffd700 72deg 78deg, #1a1a4e 78deg 81deg,
+      #ffd700 81deg 87deg, #1a1a4e 87deg 90deg,
+      #ffd700 90deg 96deg, #1a1a4e 96deg 99deg,
+      #ffd700 99deg 105deg, #1a1a4e 105deg 108deg,
+      #ffd700 108deg 114deg, #1a1a4e 114deg 117deg,
+      #ffd700 117deg 123deg, #1a1a4e 123deg 126deg,
+      #ffd700 126deg 132deg, #1a1a4e 132deg 135deg,
+      #ffd700 135deg 141deg, #1a1a4e 141deg 144deg,
+      #ffd700 144deg 150deg, #1a1a4e 150deg 153deg,
+      #ffd700 153deg 159deg, #1a1a4e 159deg 162deg,
+      #ffd700 162deg 168deg, #1a1a4e 168deg 171deg,
+      #ffd700 171deg 177deg, #1a1a4e 177deg 180deg,
+      #ffd700 180deg 186deg, #1a1a4e 186deg 189deg,
+      #ffd700 189deg 195deg, #1a1a4e 195deg 198deg,
+      #ffd700 198deg 204deg, #1a1a4e 204deg 207deg,
+      #ffd700 207deg 213deg, #1a1a4e 213deg 216deg,
+      #ffd700 216deg 222deg, #1a1a4e 222deg 225deg,
+      #ffd700 225deg 231deg, #1a1a4e 231deg 234deg,
+      #ffd700 234deg 240deg, #1a1a4e 240deg 243deg,
+      #ffd700 243deg 249deg, #1a1a4e 249deg 252deg,
+      #ffd700 252deg 258deg, #1a1a4e 258deg 261deg,
+      #ffd700 261deg 267deg, #1a1a4e 267deg 270deg,
+      #ffd700 270deg 276deg, #1a1a4e 276deg 279deg,
+      #ffd700 279deg 285deg, #1a1a4e 285deg 288deg,
+      #ffd700 288deg 294deg, #1a1a4e 294deg 297deg,
+      #ffd700 297deg 303deg, #1a1a4e 303deg 306deg,
+      #ffd700 306deg 312deg, #1a1a4e 312deg 315deg,
+      #ffd700 315deg 321deg, #1a1a4e 321deg 324deg,
+      #ffd700 324deg 330deg, #1a1a4e 330deg 333deg,
+      #ffd700 333deg 339deg, #1a1a4e 339deg 342deg,
+      #ffd700 342deg 348deg, #1a1a4e 348deg 351deg,
+      #ffd700 351deg 357deg, #1a1a4e 357deg 360deg
     );
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-    animation: outerSpin 20s linear infinite;
+    animation: borderSpin 20s linear infinite;
   }
 
-  @keyframes outerSpin {
+  @keyframes borderSpin {
     to { transform: rotate(360deg); }
   }
 
-  .wheel {
+  .pointer {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    width: 0; height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 32px solid #ff1744;
+    filter: drop-shadow(0 0 8px #ff1744) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  }
+
+  .wheel-spin-area {
     position: absolute;
     top: 15px; left: 15px;
     width: 310px; height: 310px;
     border-radius: 50%;
     overflow: hidden;
-    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
   }
 
-  .wheel.spinning {
-    /* dynamic via JS */
+  #wheelCanvas {
+    display: block;
+    border-radius: 50%;
+    transition: none;
   }
 
-  .segment {
-    position: absolute;
-    width: 0; height: 0;
-    top: 50%; left: 50%;
-    transform-origin: 0 0;
-  }
-
-  /* pointer */
-  .pointer {
-    position: absolute;
-    top: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0; height: 0;
-    border-left: 18px solid transparent;
-    border-right: 18px solid transparent;
-    border-top: 35px solid #ff1744;
-    z-index: 10;
-    filter: drop-shadow(0 0 10px #ff1744);
-  }
-
-  .center-circle {
+  .center-dot {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px; height: 60px;
-    background: radial-gradient(circle, #fff, #ddd);
+    width: 50px; height: 50px;
+    background: radial-gradient(circle, #fff 60%, #ccc);
     border-radius: 50%;
-    z-index: 5;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    z-index: 15;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
+    font-size: 1.3em;
+  }
+
+  .lightburst {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,215,0,0.4), transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .lightburst.active {
+    animation: burstAnim 2s ease-out forwards;
+  }
+
+  @keyframes burstAnim {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.3); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(2); }
+  }
+
+  .slot-display {
+    display: none;
+    margin: 15px auto;
+    padding: 12px 25px;
+    background: #111;
+    border: 3px solid #ffd700;
+    border-radius: 12px;
+    min-width: 220px;
+  }
+
+  .slot-display.active { display: block; }
+
+  .slot-text {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
   }
 
   .spin-btn {
-    padding: 18px 60px;
-    font-size: 1.4em;
+    padding: 16px 55px;
+    font-size: 1.3em;
     font-weight: bold;
     color: #fff;
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
@@ -185,8 +228,9 @@
   }
 
   .spin-btn:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none !important;
   }
 
   .spin-btn::after {
@@ -203,6 +247,15 @@
     100% { transform: translateX(100%) rotate(45deg); }
   }
 
+  .drum-text {
+    color: #ffd700;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 15px;
+    min-height: 45px;
+    text-shadow: 0 0 10px #ffd700;
+  }
+
   /* Result overlay */
   .result-overlay {
     display: none;
@@ -212,36 +265,33 @@
     align-items: center;
     justify-content: center;
     background: rgba(0,0,0,0.85);
-    animation: fadeInOverlay 0.5s;
   }
 
-  .result-overlay.show { display: flex; }
+  .result-overlay.show {
+    display: flex;
+    animation: fadeIn 0.5s;
+  }
 
-  @keyframes fadeInOverlay {
+  @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
 
   .result-card {
     text-align: center;
-    padding: 50px 70px;
+    padding: 45px 60px;
     border-radius: 20px;
-    animation: resultBounce 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    position: relative;
+    animation: resultPop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
-  @keyframes resultBounce {
+  @keyframes resultPop {
     0% { transform: scale(0) rotate(-10deg); }
     60% { transform: scale(1.1) rotate(3deg); }
     100% { transform: scale(1) rotate(0); }
   }
 
-  .result-card.gold {
-    background: linear-gradient(135deg, #ffd700, #ffaa00);
-    box-shadow: 0 0 80px rgba(255,215,0,0.8);
-  }
   .result-card.silver {
-    background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+    background: linear-gradient(135deg, #b0b0b0, #e8e8e8);
     box-shadow: 0 0 60px rgba(192,192,192,0.8);
   }
   .result-card.special {
@@ -254,7 +304,7 @@
   }
 
   .result-emoji {
-    font-size: 5em;
+    font-size: 4.5em;
     margin-bottom: 10px;
     animation: emojiPop 0.8s ease-out 0.3s both;
   }
@@ -265,27 +315,26 @@
   }
 
   .result-title {
-    font-size: 3em;
+    font-size: 2.8em;
     font-weight: bold;
     margin-bottom: 5px;
   }
 
-  .result-card.gold .result-title { color: #5a3e00; }
   .result-card.silver .result-title { color: #333; }
   .result-card.special .result-title { color: #fff; }
   .result-card.bronze .result-title { color: #4a2800; }
 
   .result-sub {
-    font-size: 1.2em;
-    margin-bottom: 25px;
+    font-size: 1.1em;
+    margin-bottom: 20px;
     opacity: 0.8;
   }
 
   .result-card.special .result-sub { color: #eee; }
 
   .close-btn {
-    padding: 12px 40px;
-    font-size: 1.1em;
+    padding: 12px 35px;
+    font-size: 1.05em;
     border: 2px solid rgba(0,0,0,0.3);
     background: rgba(255,255,255,0.3);
     border-radius: 30px;
@@ -297,17 +346,6 @@
     background: rgba(255,255,255,0.5);
   }
 
-  /* drum roll text */
-  .drum-text {
-    color: #ffd700;
-    font-size: 1.8em;
-    font-weight: bold;
-    margin-top: 20px;
-    min-height: 50px;
-    text-shadow: 0 0 10px #ffd700;
-  }
-
-  /* fake near miss flash */
   .flash-overlay {
     display: none;
     position: fixed;
@@ -316,85 +354,23 @@
     pointer-events: none;
   }
 
-  .flash-overlay.active { display: block; animation: flashAnim 0.15s; }
+  .flash-overlay.active {
+    display: block;
+    animation: flashAnim 0.15s;
+  }
 
   @keyframes flashAnim {
-    0% { background: rgba(255,215,0,0.6); }
+    0% { background: rgba(255,215,0,0.5); }
     100% { background: transparent; }
   }
 
-  /* confetti canvas */
-  #confetti {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 99;
-  }
-
-  /* Slot-style text cycling */
-  .slot-display {
-    display: none;
-    margin: 20px auto;
-    padding: 15px 30px;
-    background: #111;
-    border: 3px solid #ffd700;
-    border-radius: 15px;
-    min-width: 250px;
-  }
-
-  .slot-display.active { display: block; }
-
-  .slot-text {
-    font-size: 2em;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-  }
-
-  /* shaking */
-  .shake {
-    animation: shake 0.1s infinite;
-  }
-
-  @keyframes shake {
-    0% { transform: translate(2px, 1px); }
-    25% { transform: translate(-2px, -1px); }
-    50% { transform: translate(1px, 2px); }
-    75% { transform: translate(-1px, -2px); }
-    100% { transform: translate(2px, -1px); }
-  }
-
-  .lightburst {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,215,0,0.3), transparent 70%);
-    pointer-events: none;
-    opacity: 0;
-    z-index: 2;
-  }
-
-  .lightburst.active {
-    animation: burstAnim 2s ease-out forwards;
-  }
-
-  @keyframes burstAnim {
-    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.3); }
-    30% { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(2); }
-  }
-
-  /* near miss label popup */
   .near-miss-popup {
     display: none;
     position: fixed;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     z-index: 60;
-    font-size: 3em;
+    font-size: 2.8em;
     font-weight: bold;
     color: #ffd700;
     text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
@@ -412,6 +388,26 @@
     60% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
     100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
   }
+
+  .shake {
+    animation: shake 0.08s infinite;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(2px, 1px); }
+    25% { transform: translate(-2px, -1px); }
+    50% { transform: translate(1px, 2px); }
+    75% { transform: translate(-1px, -2px); }
+    100% { transform: translate(2px, -1px); }
+  }
+
+  #confetti {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 99;
+  }
 </style>
 </head>
 <body>
@@ -420,15 +416,15 @@
 
 <div class="container">
   <h1>🎰 超ドキドキルーレット 🎰</h1>
-  <p class="subtitle">✨ 運命を決める一回転… あなたの運は？ ✨</p>
+  <p class="subtitle">✨ 運命の一回転… あなたの運試し！ ✨</p>
 
-  <div class="wheel-container">
-    <div class="wheel-outer"></div>
+  <div class="wheel-wrapper" id="wheelWrapper">
+    <div class="wheel-border"></div>
     <div class="pointer"></div>
-    <canvas id="wheelCanvas" width="310" height="310"
-      style="position:absolute;top:15px;left:15px;border-radius:50%;
-      transition: transform 4s cubic-bezier(0.17,0.67,0.12,0.99);"></canvas>
-    <div class="center-circle">🎯</div>
+    <div class="wheel-spin-area">
+      <canvas id="wheelCanvas" width="310" height="310"></canvas>
+    </div>
+    <div class="center-dot">🎯</div>
     <div class="lightburst" id="lightburst"></div>
   </div>
 
@@ -436,9 +432,7 @@
     <div class="slot-text" id="slotText">---</div>
   </div>
 
-  <button class="spin-btn" id="spinBtn" onclick="startSpin()">
-    🎲 運命を回す！
-  </button>
+  <button class="spin-btn" id="spinBtn" onclick="startSpin()">🎲 運命を回す！</button>
 
   <div class="drum-text" id="drumText"></div>
 </div>
@@ -457,170 +451,179 @@
 </div>
 
 <script>
-// ---------- Stars ----------
+// ===== 星背景 =====
 const starsEl = document.getElementById('stars');
 for (let i = 0; i < 80; i++) {
   const s = document.createElement('div');
   s.className = 'star';
-  s.style.left = Math.random()*100+'%';
-  s.style.top = Math.random()*100+'%';
-  s.style.animationDelay = Math.random()*3+'s';
-  s.style.width = s.style.height = (1+Math.random()*3)+'px';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.animationDelay = Math.random() * 3 + 's';
+  s.style.width = s.style.height = (1 + Math.random() * 3) + 'px';
   starsEl.appendChild(s);
 }
 
-// ---------- Wheel Drawing ----------
+// ===== セグメント定義 =====
+// 10マス × 36°ずつ
+// 金賞は見えるけど絶対止まらない！
+const segments = [
+  { label: '🥇 金賞',   color1: '#ffe44d', color2: '#ffc800', textColor: '#6b4c00', result: 'gold'    },
+  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
+  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
+  { label: '🌟 特別賞', color1: '#ce6df5', color2: '#8e24aa', textColor: '#fff',    result: 'special' },
+  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
+  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
+  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
+  { label: '🥇 金賞',   color1: '#ffe44d', color2: '#ffc800', textColor: '#6b4c00', result: 'gold'    },
+  { label: '🥈 銀賞',   color1: '#d8d8d8', color2: '#a8a8a8', textColor: '#fff',    result: 'silver'  },
+  { label: '🥉 銅賞',   color1: '#e8a555', color2: '#b87333', textColor: '#fff',    result: 'bronze'  },
+];
+
+const SEG_COUNT = segments.length;
+const SEG_DEG = 360 / SEG_COUNT; // 36°
+const SEG_RAD = (2 * Math.PI) / SEG_COUNT;
+
+// ===== ホイール描画 =====
 const canvas = document.getElementById('wheelCanvas');
 const ctx = canvas.getContext('2d');
-const segments = [
-  { label: '🥇金賞', color: '#ffd700', border: '#b8860b' },
-  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
-  { label: '🌟特別賞', color: '#9c27b0', border: '#6a0080' },
-  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
-  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
-  { label: '🥇金賞', color: '#ffd700', border: '#b8860b' },
-  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
-  { label: '🌟特別賞', color: '#9c27b0', border: '#6a0080' },
-  { label: '🥈銀賞', color: '#c0c0c0', border: '#888' },
-  { label: '🥉銅賞', color: '#cd7f32', border: '#8b4513' },
-];
-const segCount = segments.length;
-const arc = (2*Math.PI)/segCount;
-const radius = 155;
+const CX = 155, CY = 155, R = 150;
 
 function drawWheel() {
-  ctx.clearRect(0,0,310,310);
-  for (let i = 0; i < segCount; i++) {
-    const angle = arc*i - Math.PI/2;
-    ctx.beginPath();
-    ctx.moveTo(155,155);
-    ctx.arc(155,155,radius,angle,angle+arc);
-    ctx.closePath();
+  ctx.clearRect(0, 0, 310, 310);
+  for (let i = 0; i < SEG_COUNT; i++) {
+    const startAngle = SEG_RAD * i - Math.PI / 2;
+    const endAngle = startAngle + SEG_RAD;
+    const seg = segments[i];
 
-    const grad = ctx.createRadialGradient(155,155,30,155,155,radius);
-    grad.addColorStop(0, lightenColor(segments[i].color, 40));
-    grad.addColorStop(1, segments[i].color);
+    // 塗り
+    const grad = ctx.createRadialGradient(CX, CY, 20, CX, CY, R);
+    grad.addColorStop(0, seg.color1);
+    grad.addColorStop(1, seg.color2);
+
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R, startAngle, endAngle);
+    ctx.closePath();
     ctx.fillStyle = grad;
     ctx.fill();
 
-    ctx.strokeStyle = segments[i].border;
+    // 境界線
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // label
+    // テキスト
     ctx.save();
-    ctx.translate(155,155);
-    ctx.rotate(angle + arc/2);
-    ctx.fillStyle = i===0||i===5 ? '#5a3e00' : '#fff';
-    ctx.font = 'bold 15px sans-serif';
+    ctx.translate(CX, CY);
+    ctx.rotate(startAngle + SEG_RAD / 2);
+    ctx.fillStyle = seg.textColor;
+    ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 4;
-    ctx.fillText(segments[i].label, radius*0.62, 0);
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 3;
+    ctx.fillText(seg.label, R * 0.6, 0);
+    ctx.shadowBlur = 0;
     ctx.restore();
   }
-  // inner ring
-  ctx.beginPath();
-  ctx.arc(155,155,32,0,2*Math.PI);
-  ctx.fillStyle = '#222';
-  ctx.fill();
-}
 
-function lightenColor(hex, amt) {
-  let r = parseInt(hex.slice(1,3),16);
-  let g = parseInt(hex.slice(3,5),16);
-  let b = parseInt(hex.slice(5,7),16);
-  r = Math.min(255, r+amt);
-  g = Math.min(255, g+amt);
-  b = Math.min(255, b+amt);
-  return `rgb(${r},${g},${b})`;
+  // 中心の暗い円
+  ctx.beginPath();
+  ctx.arc(CX, CY, 27, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a1a3e';
+  ctx.fill();
 }
 
 drawWheel();
 
-// ---------- Determine result (hidden probabilities) ----------
-function getResult() {
-  const r = Math.random()*100;
-  // 金賞 0%, 銀賞 30%, 特別賞 10%, 銅賞 60%
+// ===== 確率判定（金賞 0%、銀賞 30%、特別賞 10%、銅賞 60%） =====
+function pickResult() {
+  const r = Math.random() * 100;
   if (r < 30) return 'silver';
   if (r < 40) return 'special';
   return 'bronze';
 }
 
-// Map result to angle range on the wheel
-// Segment indices:
-// 0: 金賞   (0-36°)
-// 1: 銀賞   (36-72°)
-// 2: 特別賞 (72-108°)
-// 3: 銅賞   (108-144°)
-// 4: 銀賞   (144-180°)
-// 5: 金賞   (180-216°)
-// 6: 銅賞   (216-252°)
-// 7: 特別賞 (252-288°)
-// 8: 銀賞   (288-324°)
-// 9: 銅賞   (324-360°)
+// ===== 結果 → 止まるべき角度を算出 =====
+// ポインターは上（12時方向）に固定
+// ホイールは時計回りに回転（CSS transform rotate の正方向）
+//
+// セグメント i は「ホイール上で 12時方向から時計回りに i*36° ~ (i+1)*36°」
+// ホイールが totalDeg 回転した後、ポインターが指すセグメントは
+//   normalizedDeg = totalDeg % 360
+//   ポインターが指す元の角度 = (360 - normalizedDeg) % 360
+//   segIndex = floor(ポインターが指す元の角度 / 36)
+//
+// 逆算: segIndex i に止めたい場合
+//   i * 36 ≤ (360 - normalizedDeg) % 360 < (i+1) * 36
+//   normalizedDeg = 360 - (i * 36 + offset)   (offset は 0~36 の間、端を避ける)
 
-function getTargetAngle(result) {
-  const segMap = {
-    gold: [0, 5],
-    silver: [1, 4, 8],
-    special: [2, 7],
-    bronze: [3, 6, 9]
-  };
-  const segs = segMap[result];
-  const chosen = segs[Math.floor(Math.random()*segs.length)];
-  // The pointer is at top (270° in standard, or 0° in our rotated system)
-  // segment i occupies from i*36° to (i+1)*36° from the top going clockwise
-  // to land on segment i, wheel must rotate so that segment i is at the top
-  // wheel rotation: spin is clockwise, segment 0 starts at top
-  // to land on segment i: targetDeg = 360 - (i*36 + random_within_segment)
-  const segDeg = 36;
-  const withinSeg = 5 + Math.random()*(segDeg - 10); // avoid edges
-  const targetDeg = 360 - (chosen * segDeg + withinSeg);
-  return targetDeg;
+function calcStopAngle(resultType) {
+  // resultType に該当するセグメントインデックスを集める
+  const candidates = [];
+  for (let i = 0; i < SEG_COUNT; i++) {
+    if (segments[i].result === resultType) candidates.push(i);
+  }
+  // ランダムに一つ選ぶ
+  const segIdx = candidates[Math.floor(Math.random() * candidates.length)];
+
+  // セグメント内のランダム位置（端から5°余裕）
+  const margin = 5;
+  const offset = margin + Math.random() * (SEG_DEG - 2 * margin);
+
+  // normalizedDeg = 360 - (segIdx * SEG_DEG + offset)
+  let normDeg = 360 - (segIdx * SEG_DEG + offset);
+  if (normDeg < 0) normDeg += 360;
+
+  return { normDeg, segIdx };
 }
 
-// ---------- Spin Logic ----------
-let currentRotation = 0;
+// ===== 検証: 角度からセグメント取得 =====
+function getSegmentAtAngle(totalDeg) {
+  let norm = totalDeg % 360;
+  if (norm < 0) norm += 360;
+  let pointerAngle = (360 - norm) % 360;
+  if (pointerAngle < 0) pointerAngle += 360;
+  return Math.floor(pointerAngle / SEG_DEG) % SEG_COUNT;
+}
+
+// ===== スピン =====
+let totalRotation = 0;
 let spinning = false;
 
-// Audio context for sounds
+const drumText = document.getElementById('drumText');
+const slotDisplay = document.getElementById('slotDisplay');
+const slotText = document.getElementById('slotText');
+const spinBtn = document.getElementById('spinBtn');
+const prizes = ['🥇 金賞', '🥈 銀賞', '🌟 特別賞', '🥉 銅賞'];
+
+// 音
 let audioCtx;
-function getAudioCtx() {
+function ac() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
 }
 
 function playTick() {
   try {
-    const ctx = getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = 800 + Math.random()*400;
-    osc.type = 'square';
-    gain.gain.value = 0.05;
-    osc.start();
-    osc.stop(ctx.currentTime + 0.03);
+    const c = ac(), o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.frequency.value = 600 + Math.random() * 600;
+    o.type = 'square'; g.gain.value = 0.04;
+    o.start(); o.stop(c.currentTime + 0.025);
   } catch(e) {}
 }
 
 function playDrumRoll() {
   try {
-    const ctx = getAudioCtx();
+    const c = ac();
     for (let i = 0; i < 40; i++) {
       setTimeout(() => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = 100 + Math.random()*100;
-        osc.type = 'triangle';
-        gain.gain.value = 0.03;
-        osc.start();
-        osc.stop(ctx.currentTime + 0.05);
+        const o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination);
+        o.frequency.value = 100 + Math.random() * 100;
+        o.type = 'triangle'; g.gain.value = 0.03;
+        o.start(); o.stop(c.currentTime + 0.05);
       }, i * 50);
     }
   } catch(e) {}
@@ -628,118 +631,115 @@ function playDrumRoll() {
 
 function playFanfare() {
   try {
-    const ctx = getAudioCtx();
-    const notes = [523, 659, 784, 1047];
-    notes.forEach((freq, i) => {
+    const c = ac();
+    [523, 659, 784, 1047].forEach((f, i) => {
       setTimeout(() => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = freq;
-        osc.type = 'sine';
-        gain.gain.value = 0.08;
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.5);
+        const o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination);
+        o.frequency.value = f; o.type = 'sine';
+        g.gain.value = 0.08;
+        g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.5);
+        o.start(); o.stop(c.currentTime + 0.5);
       }, i * 200);
     });
   } catch(e) {}
 }
 
-const drumText = document.getElementById('drumText');
-const slotDisplay = document.getElementById('slotDisplay');
-const slotText = document.getElementById('slotText');
-const spinBtn = document.getElementById('spinBtn');
-
-const prizes = ['🥇 金賞', '🥈 銀賞', '🌟 特別賞', '🥉 銅賞'];
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function startSpin() {
   if (spinning) return;
   spinning = true;
   spinBtn.disabled = true;
-
-  const result = getResult();
-  const targetAngle = getTargetAngle(result);
-  const totalSpin = 360 * (5 + Math.floor(Math.random()*3)) + targetAngle;
-
   drumText.textContent = '';
 
-  // Phase 1: Dramatic countdown
+  // 1) 結果を先に決定
+  const resultType = pickResult();
+  const { normDeg, segIdx } = calcStopAngle(resultType);
+
+  // 回転量 = ベース数周 + 着地角度
+  const fullSpins = 360 * (6 + Math.floor(Math.random() * 3)); // 6〜8周
+  const spinAmount = fullSpins + normDeg - (totalRotation % 360);
+  const targetRotation = totalRotation + spinAmount;
+
+  // 2) 演出開始
   drumText.textContent = '運命の歯車が動き出す…';
   await sleep(800);
 
-  // Phase 2: Spin the wheel
   drumText.textContent = '回れ──────！！';
   playDrumRoll();
 
-  currentRotation += totalSpin;
-  canvas.style.transform = `rotate(${currentRotation}deg)`;
+  // ホイール回転アニメーション
+  canvas.style.transition = 'transform 5s cubic-bezier(0.15, 0.60, 0.10, 1.00)';
+  canvas.style.transform = `rotate(${targetRotation}deg)`;
+  totalRotation = targetRotation;
 
-  // tick sounds during spin
-  let tickInterval = setInterval(playTick, 100);
+  // カチカチ音
+  let tickInterval = setInterval(playTick, 80);
 
-  // slot display cycling
+  // スロット風テキスト
   slotDisplay.classList.add('active');
-  let slotInterval = setInterval(() => {
-    slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
-  }, 80);
+  let slotSpeed = 70;
+  let slotTimer = setInterval(() => {
+    slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
+  }, slotSpeed);
 
-  // Near miss fake-out at 2.5 seconds
+  // 2.5秒目: ニアミス演出（金賞がチラッと見える）
   setTimeout(() => {
-    // Always flash gold briefly for excitement
-    const flashEl = document.getElementById('flashOverlay');
-    flashEl.classList.add('active');
-    setTimeout(() => flashEl.classList.remove('active'), 150);
+    const flash = document.getElementById('flashOverlay');
+    flash.classList.add('active');
+    setTimeout(() => flash.classList.remove('active'), 150);
 
-    const nearMiss = document.getElementById('nearMissPopup');
-    nearMiss.textContent = '🥇 金賞!?';
-    nearMiss.classList.add('show');
-    setTimeout(() => nearMiss.classList.remove('show'), 1200);
+    const popup = document.getElementById('nearMissPopup');
+    popup.textContent = '🥇 金賞…!?';
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 1200);
   }, 2500);
 
-  // Slow down slot text
+  // 3.5秒目: スロット減速
   setTimeout(() => {
-    clearInterval(slotInterval);
-    slotInterval = setInterval(() => {
-      slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
+    clearInterval(slotTimer);
+    slotTimer = setInterval(() => {
+      slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
     }, 200);
-  }, 3000);
-
-  setTimeout(() => {
-    clearInterval(slotInterval);
-    slotInterval = setInterval(() => {
-      slotText.textContent = prizes[Math.floor(Math.random()*prizes.length)];
-    }, 400);
   }, 3500);
 
-  // Wheel stops around 4s
-  await sleep(4000);
-  clearInterval(tickInterval);
-  clearInterval(slotInterval);
+  // 4.3秒目: さらに減速
+  setTimeout(() => {
+    clearInterval(slotTimer);
+    slotTimer = setInterval(() => {
+      slotText.textContent = prizes[Math.floor(Math.random() * prizes.length)];
+    }, 400);
+  }, 4300);
 
-  // Phase 3: Dramatic pause
+  // 5秒: ホイール停止
+  await sleep(5000);
+  clearInterval(tickInterval);
+  clearInterval(slotTimer);
+
+  // 3) 検証（デバッグ）
+  const actualSeg = getSegmentAtAngle(totalRotation);
+  console.log(`狙い: seg${segIdx}(${segments[segIdx].label}), 実際: seg${actualSeg}(${segments[actualSeg].label})`);
+
+  // 4) ドキドキ演出
   slotText.textContent = '？？？';
   drumText.textContent = '';
   await sleep(500);
   drumText.textContent = 'ドキドキ…';
-  await sleep(600);
+  await sleep(700);
   drumText.textContent = 'ドキドキドキ…！';
-  document.querySelector('.wheel-container').classList.add('shake');
-  await sleep(800);
-  document.querySelector('.wheel-container').classList.remove('shake');
-
+  document.getElementById('wheelWrapper').classList.add('shake');
+  await sleep(900);
+  document.getElementById('wheelWrapper').classList.remove('shake');
   drumText.textContent = '結果は───';
-  await sleep(1000);
+  await sleep(1200);
 
-  // Lightburst
+  // 5) 結果表示
   document.getElementById('lightburst').classList.add('active');
-
-  // Show actual result
   slotDisplay.classList.remove('active');
   drumText.textContent = '';
 
-  showResult(result);
+  showResult(segments[actualSeg].result);
   playFanfare();
 
   setTimeout(() => {
@@ -750,6 +750,7 @@ async function startSpin() {
   spinBtn.disabled = false;
 }
 
+// ===== 結果表示 =====
 function showResult(result) {
   const overlay = document.getElementById('resultOverlay');
   const card = document.getElementById('resultCard');
@@ -760,43 +761,31 @@ function showResult(result) {
   card.className = 'result-card';
 
   const data = {
-    gold: {
-      class: 'gold',
-      emoji: '👑🥇👑',
-      title: '🎊 金 賞 🎊',
-      sub: '超超超レア！！ おめでとう！！！'
-    },
     silver: {
-      class: 'silver',
-      emoji: '✨🥈✨',
+      cls: 'silver', emoji: '✨🥈✨',
       title: '🎉 銀 賞 🎉',
       sub: 'すごい！銀賞おめでとう！'
     },
     special: {
-      class: 'special',
-      emoji: '🌟💫🌟',
+      cls: 'special', emoji: '🌟💫🌟',
       title: '⚡ 特 別 賞 ⚡',
-      sub: '何かが起こる…！？スペシャルおめでとう！'
+      sub: 'スペシャル！何かいいことあるかも…！？'
     },
     bronze: {
-      class: 'bronze',
-      emoji: '🎊🥉🎊',
+      cls: 'bronze', emoji: '🎊🥉🎊',
       title: '🏅 銅 賞 🏅',
-      sub: '銅賞ゲット！次は上を目指せ！'
+      sub: '銅賞ゲット！次こそは上を目指せ！'
     }
   };
 
   const d = data[result];
-  card.classList.add(d.class);
+  card.classList.add(d.cls);
   emoji.textContent = d.emoji;
   title.textContent = d.title;
   sub.textContent = d.sub;
   overlay.classList.add('show');
 
-  // Confetti for silver/special/gold
-  if (result !== 'bronze') {
-    launchConfetti();
-  }
+  if (result !== 'bronze') launchConfetti();
 }
 
 function closeResult() {
@@ -805,15 +794,10 @@ function closeResult() {
   stopConfetti();
 }
 
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-// ---------- Confetti ----------
+// ===== 紙吹雪 =====
 const confettiCanvas = document.getElementById('confetti');
 const cctx = confettiCanvas.getContext('2d');
-let confettiPieces = [];
-let confettiAnim;
+let confettiPieces = [], confettiAnim;
 
 function resizeConfetti() {
   confettiCanvas.width = window.innerWidth;
@@ -826,22 +810,22 @@ function launchConfetti() {
   confettiPieces = [];
   for (let i = 0; i < 150; i++) {
     confettiPieces.push({
-      x: Math.random()*confettiCanvas.width,
-      y: Math.random()*confettiCanvas.height - confettiCanvas.height,
-      w: 5+Math.random()*8,
-      h: 10+Math.random()*8,
-      color: `hsl(${Math.random()*360},90%,60%)`,
-      speed: 2+Math.random()*4,
-      angle: Math.random()*2*Math.PI,
-      spin: (Math.random()-0.5)*0.2,
-      drift: (Math.random()-0.5)*2
+      x: Math.random() * confettiCanvas.width,
+      y: -20 - Math.random() * confettiCanvas.height,
+      w: 5 + Math.random() * 8,
+      h: 10 + Math.random() * 8,
+      color: `hsl(${Math.random() * 360},85%,60%)`,
+      speed: 2 + Math.random() * 4,
+      angle: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.2,
+      drift: (Math.random() - 0.5) * 2,
     });
   }
   animateConfetti();
 }
 
 function animateConfetti() {
-  cctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
   confettiPieces.forEach(p => {
     p.y += p.speed;
     p.x += p.drift;
@@ -850,7 +834,7 @@ function animateConfetti() {
     cctx.translate(p.x, p.y);
     cctx.rotate(p.angle);
     cctx.fillStyle = p.color;
-    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    cctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
     cctx.restore();
   });
   confettiAnim = requestAnimationFrame(animateConfetti);
@@ -858,7 +842,7 @@ function animateConfetti() {
 
 function stopConfetti() {
   cancelAnimationFrame(confettiAnim);
-  cctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
   confettiPieces = [];
 }
 </script>
