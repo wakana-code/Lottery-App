@@ -1,932 +1,678 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎊 ガラガラ福引き抽選器 🎊</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
-    font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    overflow: hidden;
-    user-select: none;
-  }
-
-  h1 {
-    color: #ffd700;
-    font-size: 2em;
-    margin-bottom: 5px;
-    text-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes glow {
-    from { text-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00; }
-    to { text-shadow: 0 0 25px #ffd700, 0 0 50px #ff8c00, 0 0 70px #ff4500; }
-  }
-
-  .sub { color: #ccc; margin-bottom: 25px; font-size: 0.95em; }
-
-  /* ===== 抽選器本体 ===== */
-  .galagala {
-    position: relative;
-    width: 320px;
-    height: 420px;
-    margin-bottom: 15px;
-  }
-
-  /* 台座 */
-  .stand {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 30px;
-    background: linear-gradient(to bottom, #8B5E3C, #6B3A1F);
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  }
-
-  .stand-leg-l, .stand-leg-r {
-    position: absolute;
-    bottom: 30px;
-    width: 14px;
-    height: 60px;
-    background: linear-gradient(to right, #7B4E2C, #9B6E4C, #7B4E2C);
-    border-radius: 3px;
-  }
-  .stand-leg-l { left: 110px; }
-  .stand-leg-r { right: 110px; }
-
-  /* 木箱（六角形っぽい八角形の回転する箱） */
-  .box-container {
-    position: absolute;
-    top: 55px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 160px;
-    height: 160px;
-  }
-
-  .box {
-    width: 160px;
-    height: 160px;
-    position: relative;
-    transform-origin: center center;
-    transition: transform 0.1s;
-  }
-
-  .box-body {
-    position: absolute;
-    top: 10px; left: 10px;
-    width: 140px;
-    height: 140px;
-    background: linear-gradient(145deg, #d4a055, #b8862d, #9a6b20);
-    border-radius: 18px;
-    border: 4px solid #6B3A1F;
-    box-shadow:
-      inset 0 0 20px rgba(0,0,0,0.3),
-      0 5px 20px rgba(0,0,0,0.4);
-    overflow: hidden;
-  }
-
-  /* 木目模様 */
-  .box-body::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 12px,
-      rgba(0,0,0,0.06) 12px,
-      rgba(0,0,0,0.06) 14px
-    );
-  }
-
-  .box-body::after {
-    content: '福';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3em;
-    color: #8b0000;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-    opacity: 0.7;
-  }
-
-  /* 金属の帯 */
-  .band-h {
-    position: absolute;
-    top: 50%; left: 10px;
-    transform: translateY(-50%);
-    width: 140px; height: 10px;
-    background: linear-gradient(to bottom, #ddd, #888, #ddd);
-    border-radius: 2px;
-    z-index: 2;
-  }
-
-  .band-v {
-    position: absolute;
-    left: 50%; top: 10px;
-    transform: translateX(-50%);
-    width: 10px; height: 140px;
-    background: linear-gradient(to right, #ddd, #888, #ddd);
-    border-radius: 2px;
-    z-index: 2;
-  }
-
-  /* ハンドル */
-  .handle-axis {
-    position: absolute;
-    top: 50%;
-    right: -55px;
-    transform: translateY(-50%);
-    width: 55px;
-    height: 8px;
-    background: linear-gradient(to bottom, #bbb, #777);
-    border-radius: 3px;
-    z-index: 3;
-    transform-origin: left center;
-  }
-
-  .handle-knob {
-    position: absolute;
-    right: -14px;
-    top: -10px;
-    width: 28px;
-    height: 28px;
-    background: radial-gradient(circle at 35% 35%, #ff4444, #cc0000, #880000);
-    border-radius: 50%;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
-  }
-
-  /* 玉が出る穴 */
-  .exit-hole {
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 36px;
-    height: 20px;
-    background: #1a0a0a;
-    border-radius: 0 0 18px 18px;
-    border: 3px solid #6B3A1F;
-    border-top: none;
-    z-index: 4;
-  }
-
-  /* 滑り台（スロープ） */
-  .slope {
-    position: absolute;
-    top: 240px;
-    left: 50%;
-    transform: translateX(-50%) rotate(12deg);
-    width: 160px;
-    height: 14px;
-    background: linear-gradient(to bottom, #c49a5a, #a07830);
-    border-radius: 4px;
-    border: 2px solid #6B3A1F;
-    transform-origin: left center;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-  }
-
-  .slope-end {
-    position: absolute;
-    top: 253px;
-    right: 60px;
-    width: 30px;
-    height: 18px;
-    background: linear-gradient(to bottom, #c49a5a, #a07830);
-    border-radius: 0 0 8px 8px;
-    border: 2px solid #6B3A1F;
-    border-top: none;
-  }
-
-  /* 玉受け皿 */
-  .tray {
-    position: absolute;
-    bottom: 35px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 50px;
-    background: linear-gradient(to bottom, #c49a5a, #8B5E3C);
-    border-radius: 0 0 20px 20px;
-    border: 3px solid #6B3A1F;
-    border-top: 2px solid #a07830;
-    box-shadow: inset 0 5px 15px rgba(0,0,0,0.3), 0 3px 10px rgba(0,0,0,0.3);
-  }
-
-  /* ===== 玉 ===== */
-  .ball {
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    z-index: 10;
-    opacity: 0;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
-  }
-
-  .ball.gold {
-    background: radial-gradient(circle at 35% 35%, #fff5a0, #ffd700, #b8860b);
-  }
-  .ball.silver {
-    background: radial-gradient(circle at 35% 35%, #fff, #c0c0c0, #808080);
-  }
-  .ball.special {
-    background: radial-gradient(circle at 35% 35%, #f0a0ff, #a020f0, #6a0dad);
-  }
-  .ball.bronze {
-    background: radial-gradient(circle at 35% 35%, #f0c080, #cd7f32, #8b4513);
-  }
-
-  .ball .ball-shine {
-    position: absolute;
-    top: 5px; left: 7px;
-    width: 10px; height: 7px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 50%;
-    transform: rotate(-30deg);
-  }
-
-  /* 玉アニメーション */
-  .ball.anim-drop {
-    opacity: 1;
-    animation: ballDrop 0.6s ease-in forwards;
-  }
-
-  @keyframes ballDrop {
-    0%   { top: 200px; left: 152px; opacity: 1; }
-    40%  { top: 240px; left: 160px; }
-    100% { top: 258px; left: 195px; }
-  }
-
-  .ball.anim-roll {
-    opacity: 1;
-    animation: ballRoll 0.8s ease-out forwards;
-  }
-
-  @keyframes ballRoll {
-    0%   { top: 258px; left: 195px; transform: rotate(0deg); }
-    50%  { top: 300px; left: 180px; transform: rotate(180deg); }
-    100% { top: 340px; left: 160px; transform: rotate(360deg); }
-  }
-
-  .ball.anim-land {
-    opacity: 1;
-    animation: ballLand 0.5s cubic-bezier(0.3, 1.5, 0.6, 1) forwards;
-  }
-
-  @keyframes ballLand {
-    0%   { top: 340px; left: 160px; transform: scale(1); }
-    50%  { top: 348px; left: 160px; transform: scale(1.15, 0.85); }
-    100% { top: 345px; left: 160px; transform: scale(1); }
-  }
-
-  /* 箱の揺れ */
-  .box.shaking {
-    animation: boxShake 0.08s infinite;
-  }
-
-  @keyframes boxShake {
-    0%   { transform: translate(2px, 1px) rotate(1deg); }
-    25%  { transform: translate(-2px, -1px) rotate(-1deg); }
-    50%  { transform: translate(1px, 2px) rotate(0.5deg); }
-    75%  { transform: translate(-1px, -2px) rotate(-0.5deg); }
-    100% { transform: translate(2px, -1px) rotate(1deg); }
-  }
-
-  /* ハンドル回転 */
-  .handle-axis.spinning {
-    animation: handleSpin 0.3s linear infinite;
-  }
-
-  @keyframes handleSpin {
-    from { transform: translateY(-50%) rotate(0deg); }
-    to   { transform: translateY(-50%) rotate(360deg); }
-  }
-
-  /* ===== ボタン ===== */
-  .spin-btn {
-    padding: 16px 50px;
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 5px 25px rgba(255, 65, 108, 0.5);
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    z-index: 20;
-  }
-
-  .spin-btn:hover:not(:disabled) {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 35px rgba(255, 65, 108, 0.7);
-  }
-
-  .spin-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
-  }
-
-  .spin-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
-    animation: btnShine 3s infinite;
-  }
-
-  @keyframes btnShine {
-    0%   { transform: translateX(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) rotate(45deg); }
-  }
-
-  /* メッセージ */
-  .msg {
-    color: #ffd700;
-    font-size: 1.4em;
-    font-weight: bold;
-    margin-top: 15px;
-    min-height: 45px;
-    text-shadow: 0 0 10px #ffd700;
-    z-index: 20;
-  }
-
-  /* ===== 結果オーバーレイ ===== */
-  .overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.85);
-  }
-
-  .overlay.show { display: flex; animation: fadeIn 0.5s; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .result-card {
-    text-align: center;
-    padding: 45px 55px;
-    border-radius: 20px;
-    animation: cardPop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    max-width: 90vw;
-  }
-
-  @keyframes cardPop {
-    0%   { transform: scale(0) rotate(-10deg); }
-    60%  { transform: scale(1.1) rotate(3deg); }
-    100% { transform: scale(1) rotate(0); }
-  }
-
-  .result-card.silver  { background: linear-gradient(135deg, #b0b0b0, #e8e8e8); box-shadow: 0 0 60px rgba(192,192,192,0.8); }
-  .result-card.special { background: linear-gradient(135deg, #e040fb, #7c4dff); box-shadow: 0 0 80px rgba(224,64,251,0.8); }
-  .result-card.bronze  { background: linear-gradient(135deg, #cd7f32, #e8a850); box-shadow: 0 0 40px rgba(205,127,50,0.6); }
-
-  .r-emoji { font-size: 4em; margin-bottom: 10px; animation: emojiPop 0.8s ease-out 0.3s both; }
-
-  @keyframes emojiPop {
-    0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
-    100% { transform: scale(1) rotate(0); opacity: 1; }
-  }
-
-  .r-title { font-size: 2.5em; font-weight: bold; margin-bottom: 5px; }
-  .result-card.silver .r-title  { color: #333; }
-  .result-card.special .r-title { color: #fff; }
-  .result-card.bronze .r-title  { color: #4a2800; }
-
-  .r-sub { font-size: 1.1em; margin-bottom: 20px; opacity: 0.8; }
-  .result-card.special .r-sub { color: #eee; }
-
-  .close-btn {
-    padding: 12px 35px;
-    font-size: 1em;
-    border: 2px solid rgba(0,0,0,0.3);
-    background: rgba(255,255,255,0.3);
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-  }
-  .close-btn:hover { background: rgba(255,255,255,0.5); }
-
-  /* 紙吹雪 */
-  #confetti {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 99;
-  }
-
-  /* 中のカラカラ玉たち */
-  .inner-balls {
-    position: absolute;
-    top: 10px; left: 10px;
-    width: 140px; height: 140px;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .inner-ball {
-    position: absolute;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    opacity: 0.85;
-  }
-
-  .box.shaking .inner-ball {
-    animation: innerBounce 0.12s infinite;
-  }
-
-  @keyframes innerBounce {
-    0%   { transform: translate(0, 0); }
-    25%  { transform: translate(3px, -4px); }
-    50%  { transform: translate(-2px, 3px); }
-    75%  { transform: translate(4px, 2px); }
-    100% { transform: translate(-3px, -2px); }
-  }
-
-  /* 効果パーティクル */
-  .sparkle {
-    position: absolute;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 30;
-    opacity: 0;
-  }
-
-  .sparkle.pop {
-    animation: sparklePop 0.8s ease-out forwards;
-  }
-
-  @keyframes sparklePop {
-    0%   { opacity: 1; transform: scale(0) translate(0, 0); }
-    100% { opacity: 0; transform: scale(1.5) translate(var(--tx), var(--ty)); }
-  }
-
-  /* near miss */
-  .near-miss {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 60;
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
-    pointer-events: none;
-  }
-
-  .near-miss.show {
-    display: block;
-    animation: nearMiss 1.2s ease-out forwards;
-  }
-
-  @keyframes nearMiss {
-    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0; }
-    30%  { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
-    60%  { transform: translate(-50%,-50%) scale(1); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(1); opacity: 0; }
-  }
-
-  .flash {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 50;
-    pointer-events: none;
-  }
-
-  .flash.active {
-    display: block;
-    animation: flashAnim 0.2s;
-  }
-
-  @keyframes flashAnim {
-    0%   { background: rgba(255,255,255,0.5); }
-    100% { background: transparent; }
-  }
-
-  /* カラカラ音テキスト */
-  .karakara-text {
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #ff8c00;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 25;
-  }
-
-  .karakara-text.show {
-    animation: karkaraFloat 1.5s ease-out forwards;
-  }
-
-  @keyframes karkaraFloat {
-    0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-40px); }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 派手なルーレット 🎰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+            to { text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff, 0 0 80px #00ffff; }
+        }
+
+        .roulette-wrapper {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .roulette-border {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff0000, #ff7700, #ffff00, #00ff00, #0077ff, #8800ff, #ff00ff, #ff0000
+            );
+            animation: borderSpin 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes borderSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .roulette-inner-bg {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 384px;
+            height: 384px;
+            border-radius: 50%;
+            background: #1a1a3e;
+            z-index: 2;
+        }
+
+        canvas {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 3;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+        }
+
+        .pointer {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 50px;
+            filter: drop-shadow(0 0 10px #ff0000);
+            animation: pointerPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pointerPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff, #ddd);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        #spinBtn {
+            padding: 18px 60px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff0080, #ff8c00, #ff0080);
+            background-size: 200% 200%;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.6), 0 5px 15px rgba(0,0,0,0.3);
+            animation: btnGlow 2s ease-in-out infinite;
+            transition: transform 0.2s;
+            letter-spacing: 3px;
+        }
+
+        #spinBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255, 0, 128, 0.8), 0 5px 25px rgba(0,0,0,0.5);
+        }
+
+        #spinBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        @keyframes btnGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* パーティクル背景 */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+        }
+
+        /* 結果モーダル */
+        .result-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-overlay.show {
+            display: flex;
+        }
+
+        .result-box {
+            text-align: center;
+            padding: 50px 80px;
+            border-radius: 30px;
+            animation: resultAppear 0.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes resultAppear {
+            from { transform: scale(0) rotate(-180deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .result-box.gold {
+            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            box-shadow: 0 0 80px #ffd700, 0 0 150px #ffd700;
+        }
+
+        .result-box.silver {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #c0c0c0);
+            box-shadow: 0 0 60px #c0c0c0, 0 0 100px #c0c0c0;
+        }
+
+        .result-box.special {
+            background: linear-gradient(135deg, #ff00ff, #8800ff, #00ffff, #ff00ff);
+            background-size: 300% 300%;
+            animation: resultAppear 0.5s ease-out, rainbowBg 2s ease-in-out infinite;
+            box-shadow: 0 0 80px #ff00ff, 0 0 150px #8800ff;
+        }
+
+        @keyframes rainbowBg {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .result-box.bronze {
+            background: linear-gradient(135deg, #cd7f32, #e8a860, #cd7f32);
+            box-shadow: 0 0 40px #cd7f32, 0 0 80px #cd7f32;
+        }
+
+        .result-emoji {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 15px;
+            animation: emojiDance 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes emojiDance {
+            from { transform: scale(1) rotate(-5deg); }
+            to { transform: scale(1.15) rotate(5deg); }
+        }
+
+        .result-text {
+            font-size: 3em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            margin-bottom: 10px;
+        }
+
+        .result-sub {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 25px;
+        }
+
+        .result-close {
+            padding: 12px 40px;
+            font-size: 1.1em;
+            border: 2px solid white;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .result-close:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        /* 花火エフェクト */
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: fireworkBurst 1.2s ease-out forwards;
+        }
+
+        @keyframes fireworkBurst {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* ルーレット光エフェクト */
+        .light-ring {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .light-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            animation: lightBlink 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes lightBlink {
+            from { opacity: 0.3; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* スピン中のフラッシュ */
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            animation: flashAnim 0.3s ease-out;
+        }
+
+        @keyframes flashAnim {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+
+        /* 確率表示 */
+        .prob-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .prob-item {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: white;
+            font-weight: bold;
+        }
+
+        .prob-gold { background: linear-gradient(135deg, #ffd700, #ff8c00); }
+        .prob-silver { background: linear-gradient(135deg, #a0a0a0, #c0c0c0); }
+        .prob-special { background: linear-gradient(135deg, #ff00ff, #8800ff); }
+        .prob-bronze { background: linear-gradient(135deg, #cd7f32, #a0622e); }
+
+        /* 紙吹雪 */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 101;
+            pointer-events: none;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-
-<h1>🎊 ガラガラ福引き 🎊</h1>
-<p class="sub">✨ ハンドルを回して運試し！ ✨</p>
-
-<div class="galagala" id="galagala">
-  <!-- 脚 -->
-  <div class="stand-leg-l"></div>
-  <div class="stand-leg-r"></div>
-
-  <!-- 箱 -->
-  <div class="box-container">
-    <div class="box" id="box">
-      <div class="box-body">
-        <div class="inner-balls" id="innerBalls"></div>
-      </div>
-      <div class="band-h"></div>
-      <div class="band-v"></div>
-      <div class="exit-hole"></div>
-
-      <!-- ハンドル -->
-      <div class="handle-axis" id="handle">
-        <div class="handle-knob"></div>
-      </div>
+    <div class="container">
+        <h1>🎰 SUPER ROULETTE 🎰</h1>
+        <div class="roulette-wrapper">
+            <div class="roulette-border"></div>
+            <div class="roulette-inner-bg"></div>
+            <div class="pointer">🔻</div>
+            <canvas id="wheel" width="370" height="370"></canvas>
+            <div class="center-circle">🎯</div>
+            <div class="light-ring" id="lightRing"></div>
+        </div>
+        <button id="spinBtn" onclick="spin()">🎲 SPIN! 🎲</button>
+        <div class="prob-display">
+            <span class="prob-item prob-gold">🥇 金賞 10%</span>
+            <span class="prob-item prob-silver">🥈 銀賞 30%</span>
+            <span class="prob-item prob-special">⭐ 特別賞 10%</span>
+            <span class="prob-item prob-bronze">🥉 銅賞 50%</span>
+        </div>
     </div>
-  </div>
 
-  <!-- スロープ -->
-  <div class="slope"></div>
-  <div class="slope-end"></div>
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-box" id="resultBox">
+            <span class="result-emoji" id="resultEmoji"></span>
+            <div class="result-text" id="resultText"></div>
+            <div class="result-sub" id="resultSub"></div>
+            <button class="result-close" onclick="closeResult()">OK</button>
+        </div>
+    </div>
 
-  <!-- 皿 -->
-  <div class="tray"></div>
+    <script>
+        const canvas = document.getElementById('wheel');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 170;
 
-  <!-- 台 -->
-  <div class="stand"></div>
+        // セグメント定義 (角度の割合で配置)
+        // 銅賞50%, 銀賞30%, 金賞10%, 特別賞10%
+        // 視覚的に交互に配置するためセグメントを分割
+        const segments = [
+            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
+            { label: '銀賞', color1: '#b8b8b8', color2: '#8a8a8a', emoji: '🥈', angle: 36 },
+            { label: '銅賞', color1: '#d4893c', color2: '#b07030', emoji: '🥉', angle: 36 },
+            { label: '金賞', color1: '#ffd700', color2: '#ff8c00', emoji: '🥇', angle: 36 },
+            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
+            { label: '銀賞', color1: '#c0c0c0', color2: '#909090', emoji: '🥈', angle: 36 },
+            { label: '銅賞', color1: '#d4893c', color2: '#b07030', emoji: '🥉', angle: 36 },
+            { label: '特別賞', color1: '#ff00ff', color2: '#8800ff', emoji: '⭐', angle: 36 },
+            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
+            { label: '銀賞', color1: '#b0b0b0', color2: '#888', emoji: '🥈', angle: 36 },
+        ];
 
-  <!-- 出てくる玉 -->
-  <div class="ball" id="resultBall"><div class="ball-shine"></div></div>
-</div>
+        let currentRotation = 0;
+        let isSpinning = false;
 
-<button class="spin-btn" id="spinBtn" onclick="doGalagala()">🎲 ガラガラ回す！</button>
-<div class="msg" id="msg"></div>
+        function drawWheel(rotation) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotation);
 
-<div class="near-miss" id="nearMiss"></div>
-<div class="flash" id="flash"></div>
-<canvas id="confetti"></canvas>
+            let startAngle = 0;
+            segments.forEach((seg, i) => {
+                const sliceAngle = (seg.angle * Math.PI) / 180;
+                const endAngle = startAngle + sliceAngle;
 
-<div class="overlay" id="overlay">
-  <div class="result-card" id="resultCard">
-    <div class="r-emoji" id="rEmoji"></div>
-    <div class="r-title" id="rTitle"></div>
-    <div class="r-sub" id="rSub"></div>
-    <button class="close-btn" onclick="closeResult()">もう一回！</button>
-  </div>
-</div>
+                // グラデーション
+                const grad = ctx.createRadialGradient(0, 0, 20, 0, 0, radius);
+                grad.addColorStop(0, seg.color1);
+                grad.addColorStop(1, seg.color2);
 
-<script>
-// 中の玉を描画
-const innerBalls = document.getElementById('innerBalls');
-const ballColors = ['#ffd700','#c0c0c0','#cd7f32','#a020f0','#ffd700','#c0c0c0','#cd7f32','#cd7f32','#c0c0c0','#cd7f32'];
-ballColors.forEach((c, i) => {
-  const b = document.createElement('div');
-  b.className = 'inner-ball';
-  b.style.background = `radial-gradient(circle at 35% 35%, ${lighten(c)}, ${c})`;
-  b.style.left = (15 + Math.random() * 100) + 'px';
-  b.style.top = (15 + Math.random() * 100) + 'px';
-  b.style.animationDelay = (Math.random() * 0.1) + 's';
-  innerBalls.appendChild(b);
-});
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
 
-function lighten(hex) {
-  const r = Math.min(255, parseInt(hex.slice(1,3),16) + 80);
-  const g = Math.min(255, parseInt(hex.slice(3,5),16) + 80);
-  const bb = Math.min(255, parseInt(hex.slice(5,7),16) + 80);
-  return `rgb(${r},${g},${bb})`;
-}
+                // 境界線
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
 
-// 確率: 金0%, 銀30%, 特別10%, 銅60%
-function pickResult() {
-  const r = Math.random() * 100;
-  if (r < 30) return 'silver';
-  if (r < 40) return 'special';
-  return 'bronze';
-}
+                // テキスト
+                ctx.save();
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 14px Arial';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(seg.emoji, radius * 0.6, 5);
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(seg.label, radius * 0.8, 5);
+                ctx.restore();
 
-let busy = false;
-const box = document.getElementById('box');
-const handle = document.getElementById('handle');
-const ball = document.getElementById('resultBall');
-const msg = document.getElementById('msg');
-const spinBtn = document.getElementById('spinBtn');
+                startAngle = endAngle;
+            });
 
-// 音
-let audioCtx;
-function ac() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
-}
+            ctx.restore();
+        }
 
-function playKara() {
-  try {
-    const c = ac(), o = c.createOscillator(), g = c.createGain();
-    o.connect(g); g.connect(c.destination);
-    o.frequency.value = 200 + Math.random() * 300;
-    o.type = 'triangle'; g.gain.value = 0.06;
-    o.start(); o.stop(c.currentTime + 0.04);
-  } catch(e) {}
-}
+        function createBackgroundParticles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const size = Math.random() * 6 + 2;
+                    const colors = ['#ff0080', '#00ffff', '#ffd700', '#ff4444', '#44ff44', '#ff00ff'];
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    p.style.animationDuration = (Math.random() * 5 + 4) + 's';
+                    p.style.animationDelay = (Math.random() * 3) + 's';
+                    document.body.appendChild(p);
+                    p.addEventListener('animationiteration', () => {
+                        p.style.left = Math.random() * 100 + 'vw';
+                    });
+                }, i * 200);
+            }
+        }
 
-function playPon() {
-  try {
-    const c = ac(), o = c.createOscillator(), g = c.createGain();
-    o.connect(g); g.connect(c.destination);
-    o.frequency.value = 600; o.type = 'sine';
-    g.gain.value = 0.12;
-    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.4);
-    o.start(); o.stop(c.currentTime + 0.4);
-  } catch(e) {}
-}
+        function createLightDots() {
+            const ring = document.getElementById('lightRing');
+            for (let i = 0; i < 24; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'light-dot';
+                const angle = (i / 24) * Math.PI * 2;
+                const r = 215;
+                dot.style.left = (220 + Math.cos(angle) * r - 5) + 'px';
+                dot.style.top = (220 + Math.sin(angle) * r - 5) + 'px';
+                dot.style.animationDelay = (i * 0.1) + 's';
+                const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#ff00ff', '#ffd700'];
+                dot.style.background = colors[i % colors.length];
+                dot.style.boxShadow = `0 0 8px ${colors[i % colors.length]}`;
+                ring.appendChild(dot);
+            }
+        }
 
-function playRoll() {
-  try {
-    const c = ac();
-    for (let i = 0; i < 8; i++) {
-      setTimeout(() => {
-        const o = c.createOscillator(), g = c.createGain();
-        o.connect(g); g.connect(c.destination);
-        o.frequency.value = 300 + i * 50;
-        o.type = 'sine'; g.gain.value = 0.04;
-        o.start(); o.stop(c.currentTime + 0.08);
-      }, i * 80);
-    }
-  } catch(e) {}
-}
+        function determineResult() {
+            const rand = Math.random() * 100;
+            if (rand < 10) return { label: '金賞', class: 'gold', emoji: '👑🥇🏆', sub: 'おめでとうございます！！', text: '🎉 金賞 🎉' };
+            if (rand < 40) return { label: '銀賞', class: 'silver', emoji: '🥈✨', sub: 'すばらしい！', text: '🎊 銀賞 🎊' };
+            if (rand < 50) return { label: '特別賞', class: 'special', emoji: '🌟⭐💫', sub: 'スペシャル！！！', text: '🌈 特別賞 🌈' };
+            return { label: '銅賞', class: 'bronze', emoji: '🥉🎉', sub: 'おめでとう！', text: '🎈 銅賞 🎈' };
+        }
 
-function playFanfare() {
-  try {
-    const c = ac();
-    [523,659,784,1047].forEach((f,i) => {
-      setTimeout(() => {
-        const o = c.createOscillator(), g = c.createGain();
-        o.connect(g); g.connect(c.destination);
-        o.frequency.value = f; o.type = 'sine';
-        g.gain.value = 0.08;
-        g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.5);
-        o.start(); o.stop(c.currentTime + 0.5);
-      }, i * 180);
-    });
-  } catch(e) {}
-}
+        function getSegmentIndex(label) {
+            const indices = [];
+            segments.forEach((s, i) => {
+                if (s.label === label) indices.push(i);
+            });
+            return indices[Math.floor(Math.random() * indices.length)];
+        }
 
-function playDrumRoll() {
-  try {
-    const c = ac();
-    for (let i = 0; i < 30; i++) {
-      setTimeout(() => {
-        const o = c.createOscillator(), g = c.createGain();
-        o.connect(g); g.connect(c.destination);
-        o.frequency.value = 80 + Math.random() * 80;
-        o.type = 'triangle'; g.gain.value = 0.04;
-        o.start(); o.stop(c.currentTime + 0.04);
-      }, i * 40);
-    }
-  } catch(e) {}
-}
+        function spin() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+            const result = determineResult();
+            const segIndex = getSegmentIndex(result.label);
 
-function showKarakara() {
-  const el = document.createElement('div');
-  el.className = 'karakara-text show';
-  el.textContent = ['ガラ', 'カラ', 'ガラッ', 'カラカラ'][Math.floor(Math.random()*4)];
-  document.getElementById('galagala').appendChild(el);
-  setTimeout(() => el.remove(), 1500);
-}
+            // ターゲット角度を計算（ポインターは上にある = -π/2）
+            const segAngle = 36; // 各セグメントの角度
+            const targetSegCenter = segIndex * segAngle + segAngle / 2;
+            // ポインターは上（270度 = -90度の位置）
+            // ホイールは時計回りに回転するので、ターゲットが上に来るように
+            const targetDeg = 360 - targetSegCenter + 270;
+            const fullSpins = Math.floor(Math.random() * 3 + 6) * 360; // 6-8回転
+            const totalRotation = fullSpins + targetDeg;
+            const totalRotationRad = (totalRotation * Math.PI) / 180;
 
-function spawnSparkles(x, y, color) {
-  for (let i = 0; i < 12; i++) {
-    const s = document.createElement('div');
-    s.className = 'sparkle pop';
-    s.style.background = color;
-    s.style.left = x + 'px';
-    s.style.top = y + 'px';
-    const angle = (Math.PI * 2 / 12) * i;
-    const dist = 30 + Math.random() * 40;
-    s.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
-    s.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
-    document.getElementById('galagala').appendChild(s);
-    setTimeout(() => s.remove(), 800);
-  }
-}
+            const startRotation = currentRotation;
+            const duration = 5000 + Math.random() * 2000;
+            const startTime = performance.now();
 
-async function doGalagala() {
-  if (busy) return;
-  busy = true;
-  spinBtn.disabled = true;
-  msg.textContent = '';
+            // チックサウンドの代わりに視覚エフェクト
+            let lastSegment = -1;
 
-  // リセット玉
-  ball.className = 'ball';
-  ball.style.opacity = '0';
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
 
-  const result = pickResult();
+                // イージング (cubic ease-out with bounce feel)
+                const eased = 1 - Math.pow(1 - progress, 4);
+                
+                currentRotation = startRotation + totalRotationRad * eased;
+                drawWheel(currentRotation);
 
-  // ---- Phase 1: ガラガラ回す ----
-  msg.textContent = 'ガラガラガラ…！';
-  handle.classList.add('spinning');
-  box.classList.add('shaking');
+                // セグメント変化時のフラッシュ
+                const currentDeg = ((currentRotation * 180 / Math.PI) % 360 + 360) % 360;
+                const currentSeg = Math.floor(currentDeg / 36) % 10;
+                if (currentSeg !== lastSegment && progress < 0.9) {
+                    lastSegment = currentSeg;
+                    // 軽いパルスエフェクト
+                    canvas.style.filter = `drop-shadow(0 0 ${20 + Math.random() * 15}px rgba(255, 255, 255, ${0.5 - progress * 0.4}))`;
+                }
 
-  let karaInterval = setInterval(() => {
-    playKara();
-    showKarakara();
-  }, 200);
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    canvas.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                    showResult(result);
+                }
+            }
 
-  // ニアミス演出（1.5秒後に金色チラ見せ）
-  setTimeout(() => {
-    const nm = document.getElementById('nearMiss');
-    nm.textContent = '✨金色の玉が見えた…!?✨';
-    nm.classList.add('show');
-    const fl = document.getElementById('flash');
-    fl.classList.add('active');
-    setTimeout(() => { fl.classList.remove('active'); }, 200);
-    setTimeout(() => nm.classList.remove('show'), 1200);
-  }, 1500);
+            requestAnimationFrame(animate);
+        }
 
-  await sleep(3000);
+        function showResult(result) {
+            // フラッシュ
+            const flash = document.createElement('div');
+            flash.className = 'flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 300);
 
-  // ---- Phase 2: 減速 ----
-  clearInterval(karaInterval);
-  handle.classList.remove('spinning');
+            setTimeout(() => {
+                const overlay = document.getElementById('resultOverlay');
+                const box = document.getElementById('resultBox');
+                const emoji = document.getElementById('resultEmoji');
+                const text = document.getElementById('resultText');
+                const sub = document.getElementById('resultSub');
 
-  // ゆっくりガタガタ
-  msg.textContent = 'コロコロ…';
-  let slowCount = 0;
-  const slowInterval = setInterval(() => {
-    playKara();
-    slowCount++;
-    if (slowCount >= 5) clearInterval(slowInterval);
-  }, 400);
+                box.className = 'result-box ' + result.class;
+                emoji.textContent = result.emoji;
+                text.textContent = result.text;
+                sub.textContent = result.sub;
+                overlay.classList.add('show');
 
-  await sleep(2000);
-  box.classList.remove('shaking');
+                // 花火
+                launchFireworks(result.class === 'gold' || result.class === 'special' ? 8 : 3);
 
-  // ---- Phase 3: 玉が出る！ ----
-  msg.textContent = '…！！';
-  playPon();
-  await sleep(400);
+                // 紙吹雪
+                if (result.class === 'gold' || result.class === 'special') {
+                    launchConfetti(80);
+                } else {
+                    launchConfetti(30);
+                }
+            }, 300);
+        }
 
-  // 玉の色セット
-  ball.classList.remove('gold','silver','special','bronze');
-  ball.classList.add(result);
+        function launchFireworks(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight * 0.6
+                    );
+                }, i * 300);
+            }
+        }
 
-  // Drop animation
-  ball.classList.add('anim-drop');
-  playRoll();
-  await sleep(600);
+        function createFirework(x, y) {
+            const container = document.createElement('div');
+            container.className = 'firework';
+            container.style.left = x + 'px';
+            container.style.top = y + 'px';
+            document.body.appendChild(container);
 
-  // Roll animation
-  ball.className = `ball ${result} anim-roll`;
-  await sleep(800);
+            const colors = ['#ff0000', '#ffd700', '#00ff00', '#00ffff', '#ff00ff', '#ffaa00', '#ff4488'];
+            const particleCount = 30;
 
-  // Land animation
-  ball.className = `ball ${result} anim-land`;
-  await sleep(500);
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'firework-particle';
+                const angle = (i / particleCount) * Math.PI * 2;
+                const dist = 80 + Math.random() * 80;
+                p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+                p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 6px ${p.style.background}`;
+                container.appendChild(p);
+            }
 
-  // スパークル
-  const ballColors2 = {
-    gold: '#ffd700', silver: '#c0c0c0', special: '#a020f0', bronze: '#cd7f32'
-  };
-  spawnSparkles(160, 345, ballColors2[result]);
+            setTimeout(() => container.remove(), 1500);
+        }
 
-  // ---- Phase 4: ドラムロール演出 ----
-  msg.textContent = '';
-  await sleep(300);
-  playDrumRoll();
-  msg.textContent = 'ドキドキ…';
-  await sleep(800);
-  msg.textContent = 'ドキドキドキ…！';
-  await sleep(800);
+        function launchConfetti(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    c.className = 'confetti';
+                    c.style.left = Math.random() * 100 + 'vw';
+                    c.style.top = '-10px';
+                    c.style.width = (Math.random() * 10 + 5) + 'px';
+                    c.style.height = (Math.random() * 10 + 5) + 'px';
+                    const shapes = ['50%', '0%'];
+                    c.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+                    const colors = ['#ff0000', '#ffd700', '#00ff00', '#00aaff', '#ff00ff', '#ffaa00', '#ff6699', '#aaffaa'];
+                    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 4000);
+                }, i * 30);
+            }
+        }
 
-  // フラッシュ
-  const fl = document.getElementById('flash');
-  fl.classList.add('active');
-  setTimeout(() => fl.classList.remove('active'), 200);
+        function closeResult() {
+            document.getElementById('resultOverlay').classList.remove('show');
+            isSpinning = false;
+            document.getElementById('spinBtn').disabled = false;
+        }
 
-  msg.textContent = '結果は───！';
-  await sleep(1000);
-
-  // ---- Phase 5: 結果発表 ----
-  msg.textContent = '';
-  playFanfare();
-  showResult(result);
-
-  busy = false;
-  spinBtn.disabled = false;
-}
-
-function showResult(result) {
-  const overlay = document.getElementById('overlay');
-  const card = document.getElementById('resultCard');
-  card.className = 'result-card ' + result;
-
-  const data = {
-    silver:  { emoji: '✨🥈✨', title: '🎉 銀 賞 🎉', sub: 'すごい！銀の玉が出た！おめでとう！' },
-    special: { emoji: '🌟💫🌟', title: '⚡ 特 別 賞 ⚡', sub: '紫の玉！スペシャルな何かが…！？' },
-    bronze:  { emoji: '🎊🥉🎊', title: '🏅 銅 賞 🏅', sub: '銅の玉ゲット！次はもっと上を！' },
-  };
-
-  const d = data[result];
-  document.getElementById('rEmoji').textContent = d.emoji;
-  document.getElementById('rTitle').textContent = d.title;
-  document.getElementById('rSub').textContent = d.sub;
-  overlay.classList.add('show');
-
-  if (result !== 'bronze') launchConfetti();
-}
-
-function closeResult() {
-  document.getElementById('overlay').classList.remove('show');
-  msg.textContent = '';
-  stopConfetti();
-  // 玉リセット
-  ball.className = 'ball';
-  ball.style.opacity = '0';
-}
-
-// ===== 紙吹雪 =====
-const cc = document.getElementById('confetti');
-const cctx = cc.getContext('2d');
-let confPieces = [], confAnim;
-
-function resizeCC() { cc.width = innerWidth; cc.height = innerHeight; }
-addEventListener('resize', resizeCC);
-resizeCC();
-
-function launchConfetti() {
-  confPieces = [];
-  for (let i = 0; i < 150; i++) {
-    confPieces.push({
-      x: Math.random() * cc.width,
-      y: -20 - Math.random() * cc.height,
-      w: 5 + Math.random() * 8,
-      h: 10 + Math.random() * 8,
-      color: `hsl(${Math.random()*360},85%,60%)`,
-      speed: 2 + Math.random() * 4,
-      angle: Math.random() * Math.PI * 2,
-      spin: (Math.random() - 0.5) * 0.2,
-      drift: (Math.random() - 0.5) * 2,
-    });
-  }
-  animConf();
-}
-
-function animConf() {
-  cctx.clearRect(0, 0, cc.width, cc.height);
-  confPieces.forEach(p => {
-    p.y += p.speed; p.x += p.drift; p.angle += p.spin;
-    cctx.save();
-    cctx.translate(p.x, p.y);
-    cctx.rotate(p.angle);
-    cctx.fillStyle = p.color;
-    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-    cctx.restore();
-  });
-  confAnim = requestAnimationFrame(animConf);
-}
-
-function stopConfetti() {
-  cancelAnimationFrame(confAnim);
-  cctx.clearRect(0, 0, cc.width, cc.height);
-  confPieces = [];
-}
-</script>
+        // 初期化
+        drawWheel(0);
+        createBackgroundParticles();
+        createLightDots();
+    </script>
 </body>
 </html>
