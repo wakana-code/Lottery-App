@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎰 抽選ルーレット 🎰</title>
+    <title>🎰 派手なルーレット 🎰</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background: #0a0a2e;
@@ -21,11 +17,7 @@
             overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
+        .container { text-align: center; position: relative; z-index: 10; }
 
         h1 {
             color: #fff;
@@ -52,23 +44,17 @@
             width: 400px;
             height: 400px;
             border-radius: 50%;
-            background: conic-gradient(
-                #ff0000, #ff7700, #ffff00, #00ff00, #0077ff, #8800ff, #ff00ff, #ff0000
-            );
+            background: conic-gradient(#ff0000,#ff7700,#ffff00,#00ff00,#0077ff,#8800ff,#ff00ff,#ff0000);
             animation: borderSpin 4s linear infinite;
             z-index: 1;
         }
 
-        @keyframes borderSpin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes borderSpin { to { transform: rotate(360deg); } }
 
         .roulette-inner-bg {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 384px;
-            height: 384px;
+            top: 8px; left: 8px;
+            width: 384px; height: 384px;
             border-radius: 50%;
             background: #1a1a3e;
             z-index: 2;
@@ -76,43 +62,50 @@
 
         canvas {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 15px; left: 15px;
             z-index: 3;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
         }
 
         .pointer {
             position: absolute;
-            top: -25px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
-            font-size: 50px;
-            filter: drop-shadow(0 0 10px #ff0000);
+            width: 0; height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 40px solid #ff0000;
+            filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff4444);
             animation: pointerPulse 1s ease-in-out infinite;
         }
 
+        .pointer::after {
+            content: '';
+            position: absolute;
+            top: -42px; left: -12px;
+            width: 0; height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 10px solid #ff4444;
+        }
+
         @keyframes pointerPulse {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.2); }
+            0%,100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
         }
 
         .center-circle {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            width: 60px; height: 60px;
             border-radius: 50%;
-            background: radial-gradient(circle, #fff, #ddd);
+            background: radial-gradient(circle,#fff,#ddd);
             z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: bold;
             box-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
 
@@ -123,11 +116,11 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            background: linear-gradient(135deg, #ff0080, #ff8c00, #ff0080);
+            background: linear-gradient(135deg,#ff0080,#ff8c00,#ff0080);
             background-size: 200% 200%;
             color: white;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            box-shadow: 0 0 30px rgba(255, 0, 128, 0.6), 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 0 30px rgba(255,0,128,0.6), 0 5px 15px rgba(0,0,0,0.3);
             animation: btnGlow 2s ease-in-out infinite;
             transition: transform 0.2s;
             letter-spacing: 3px;
@@ -135,21 +128,16 @@
 
         #spinBtn:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 50px rgba(255, 0, 128, 0.8), 0 5px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(255,0,128,0.8), 0 5px 25px rgba(0,0,0,0.5);
         }
 
-        #spinBtn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: scale(1);
-        }
+        #spinBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: scale(1); }
 
         @keyframes btnGlow {
-            0%, 100% { background-position: 0% 50%; }
+            0%,100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
 
-        /* パーティクル背景 */
         .particle {
             position: fixed;
             border-radius: 50%;
@@ -163,29 +151,24 @@
             100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
         }
 
-        /* 結果モーダル */
         .result-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
             z-index: 100;
             justify-content: center;
             align-items: center;
         }
 
-        .result-overlay.show {
-            display: flex;
-        }
+        .result-overlay.show { display: flex; }
 
         .result-box {
             text-align: center;
             padding: 50px 80px;
             border-radius: 30px;
-            animation: resultAppear 0.5s ease-out;
+            animation: resultAppear 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
             position: relative;
         }
 
@@ -195,29 +178,29 @@
         }
 
         .result-box.gold {
-            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            background: linear-gradient(135deg,#ffd700,#ffaa00,#ffd700);
             box-shadow: 0 0 80px #ffd700, 0 0 150px #ffd700;
         }
 
         .result-box.silver {
-            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #c0c0c0);
+            background: linear-gradient(135deg,#c0c0c0,#e8e8e8,#c0c0c0);
             box-shadow: 0 0 60px #c0c0c0, 0 0 100px #c0c0c0;
         }
 
         .result-box.special {
-            background: linear-gradient(135deg, #ff00ff, #8800ff, #00ffff, #ff00ff);
+            background: linear-gradient(135deg,#ff00ff,#8800ff,#00ffff,#ff00ff);
             background-size: 300% 300%;
-            animation: resultAppear 0.5s ease-out, rainbowBg 2s ease-in-out infinite;
+            animation: resultAppear 0.6s cubic-bezier(0.175,0.885,0.32,1.275), rainbowBg 2s ease-in-out infinite;
             box-shadow: 0 0 80px #ff00ff, 0 0 150px #8800ff;
         }
 
         @keyframes rainbowBg {
-            0%, 100% { background-position: 0% 50%; }
+            0%,100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
 
         .result-box.bronze {
-            background: linear-gradient(135deg, #cd7f32, #e8a860, #cd7f32);
+            background: linear-gradient(135deg,#cd7f32,#e8a860,#cd7f32);
             box-shadow: 0 0 40px #cd7f32, 0 0 80px #cd7f32;
         }
 
@@ -258,45 +241,33 @@
             transition: background 0.3s;
         }
 
-        .result-close:hover {
-            background: rgba(255,255,255,0.4);
-        }
+        .result-close:hover { background: rgba(255,255,255,0.4); }
 
-        /* 花火エフェクト */
-        .firework {
-            position: fixed;
-            pointer-events: none;
-            z-index: 99;
-        }
+        .firework { position: fixed; pointer-events: none; z-index: 99; }
 
         .firework-particle {
             position: absolute;
-            width: 6px;
-            height: 6px;
+            width: 6px; height: 6px;
             border-radius: 50%;
             animation: fireworkBurst 1.2s ease-out forwards;
         }
 
         @keyframes fireworkBurst {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx),var(--ty)) scale(0); opacity: 0; }
         }
 
-        /* ルーレット光エフェクト */
         .light-ring {
             position: absolute;
-            top: -20px;
-            left: -20px;
-            width: 440px;
-            height: 440px;
+            top: -20px; left: -20px;
+            width: 440px; height: 440px;
             border-radius: 50%;
             z-index: 0;
         }
 
         .light-dot {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: #fff;
             animation: lightBlink 0.5s ease-in-out infinite alternate;
@@ -307,18 +278,14 @@
             to { opacity: 1; transform: scale(1.2); }
         }
 
-        /* スピン中のフラッシュ */
         .flash {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: white;
             z-index: 90;
-            opacity: 0;
             pointer-events: none;
-            animation: flashAnim 0.3s ease-out;
+            animation: flashAnim 0.3s ease-out forwards;
         }
 
         @keyframes flashAnim {
@@ -326,7 +293,6 @@
             100% { opacity: 0; }
         }
 
-        /* 確率表示 */
         .prob-display {
             display: flex;
             justify-content: center;
@@ -343,24 +309,34 @@
             font-weight: bold;
         }
 
-        .prob-gold { background: linear-gradient(135deg, #ffd700, #ff8c00); }
-        .prob-silver { background: linear-gradient(135deg, #a0a0a0, #c0c0c0); }
-        .prob-special { background: linear-gradient(135deg, #ff00ff, #8800ff); }
-        .prob-bronze { background: linear-gradient(135deg, #cd7f32, #a0622e); }
+        .prob-gold { background: linear-gradient(135deg,#ffd700,#ff8c00); }
+        .prob-silver { background: linear-gradient(135deg,#a0a0a0,#c0c0c0); }
+        .prob-special { background: linear-gradient(135deg,#ff00ff,#8800ff); }
+        .prob-bronze { background: linear-gradient(135deg,#cd7f32,#a0622e); }
 
-        /* 紙吹雪 */
         .confetti {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            z-index: 101;
             pointer-events: none;
+            z-index: 101;
             animation: confettiFall linear forwards;
         }
 
         @keyframes confettiFall {
             0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
+        }
+
+        /* スピン中の揺れ演出 */
+        @keyframes shakePointer {
+            0%,100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(6deg); }
+            75% { transform: translateX(-50%) rotate(-6deg); }
+        }
+
+        #debugInfo {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7em;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -370,7 +346,7 @@
         <div class="roulette-wrapper">
             <div class="roulette-border"></div>
             <div class="roulette-inner-bg"></div>
-            <div class="pointer">🔻</div>
+            <div class="pointer" id="pointer"></div>
             <canvas id="wheel" width="370" height="370"></canvas>
             <div class="center-circle">🎯</div>
             <div class="light-ring" id="lightRing"></div>
@@ -382,6 +358,7 @@
             <span class="prob-item prob-special">⭐ 特別賞 10%</span>
             <span class="prob-item prob-bronze">🥉 銅賞 50%</span>
         </div>
+        <div id="debugInfo"></div>
     </div>
 
     <div class="result-overlay" id="resultOverlay">
@@ -400,25 +377,25 @@
         const centerY = canvas.height / 2;
         const radius = 170;
 
-        // セグメント定義 (角度の割合で配置)
-        // 銅賞50%, 銀賞30%, 金賞10%, 特別賞10%
-        // 視覚的に交互に配置するためセグメントを分割
         const segments = [
-            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
-            { label: '銀賞', color1: '#b8b8b8', color2: '#8a8a8a', emoji: '🥈', angle: 36 },
-            { label: '銅賞', color1: '#d4893c', color2: '#b07030', emoji: '🥉', angle: 36 },
-            { label: '金賞', color1: '#ffd700', color2: '#ff8c00', emoji: '🥇', angle: 36 },
-            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
-            { label: '銀賞', color1: '#c0c0c0', color2: '#909090', emoji: '🥈', angle: 36 },
-            { label: '銅賞', color1: '#d4893c', color2: '#b07030', emoji: '🥉', angle: 36 },
-            { label: '特別賞', color1: '#ff00ff', color2: '#8800ff', emoji: '⭐', angle: 36 },
-            { label: '銅賞', color1: '#cd7f32', color2: '#a0622e', emoji: '🥉', angle: 36 },
-            { label: '銀賞', color1: '#b0b0b0', color2: '#888', emoji: '🥈', angle: 36 },
+            { label: '銅賞',  color1: '#cd7f32', color2: '#9a5e22', emoji: '🥉' },
+            { label: '銀賞',  color1: '#b8b8b8', color2: '#7a7a7a', emoji: '🥈' },
+            { label: '銅賞',  color1: '#d4893c', color2: '#a06828', emoji: '🥉' },
+            { label: '金賞',  color1: '#ffd700', color2: '#cc8800', emoji: '🥇' },
+            { label: '銅賞',  color1: '#cd7f32', color2: '#9a5e22', emoji: '🥉' },
+            { label: '銀賞',  color1: '#c0c0c0', color2: '#808080', emoji: '🥈' },
+            { label: '銅賞',  color1: '#d4893c', color2: '#a06828', emoji: '🥉' },
+            { label: '特別賞', color1: '#ff00ff', color2: '#7700bb', emoji: '⭐' },
+            { label: '銅賞',  color1: '#cd7f32', color2: '#9a5e22', emoji: '🥉' },
+            { label: '銀賞',  color1: '#b0b0b0', color2: '#757575', emoji: '🥈' },
         ];
 
+        const SEG_DEG = 36;
+        const SEG_COUNT = 10;
         let currentRotation = 0;
         let isSpinning = false;
 
+        /* ---- ホイール描画 ---- */
         function drawWheel(rotation) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();
@@ -426,12 +403,10 @@
             ctx.rotate(rotation);
 
             let startAngle = 0;
-            segments.forEach((seg, i) => {
-                const sliceAngle = (seg.angle * Math.PI) / 180;
-                const endAngle = startAngle + sliceAngle;
-
-                // グラデーション
-                const grad = ctx.createRadialGradient(0, 0, 20, 0, 0, radius);
+            segments.forEach((seg) => {
+                const slice = (SEG_DEG * Math.PI) / 180;
+                const endAngle = startAngle + slice;
+                const grad = ctx.createRadialGradient(0, 0, 30, 0, 0, radius);
                 grad.addColorStop(0, seg.color1);
                 grad.addColorStop(1, seg.color2);
 
@@ -441,226 +416,145 @@
                 ctx.closePath();
                 ctx.fillStyle = grad;
                 ctx.fill();
-
-                // 境界線
-                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.6)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // テキスト
                 ctx.save();
-                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.rotate(startAngle + slice / 2);
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 14px Arial';
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 4;
-                ctx.fillText(seg.emoji, radius * 0.6, 5);
-                ctx.font = 'bold 12px Arial';
+                ctx.shadowColor = 'rgba(0,0,0,0.9)';
+                ctx.shadowBlur = 5;
+                ctx.font = 'bold 22px Arial';
+                ctx.fillText(seg.emoji, radius * 0.55, 7);
+                ctx.font = 'bold 13px Arial';
                 ctx.fillText(seg.label, radius * 0.8, 5);
                 ctx.restore();
 
                 startAngle = endAngle;
             });
-
             ctx.restore();
         }
 
-        function createBackgroundParticles() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const p = document.createElement('div');
-                    p.className = 'particle';
-                    const size = Math.random() * 6 + 2;
-                    const colors = ['#ff0080', '#00ffff', '#ffd700', '#ff4444', '#44ff44', '#ff00ff'];
-                    p.style.width = size + 'px';
-                    p.style.height = size + 'px';
-                    p.style.left = Math.random() * 100 + 'vw';
-                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    p.style.animationDuration = (Math.random() * 5 + 4) + 's';
-                    p.style.animationDelay = (Math.random() * 3) + 's';
-                    document.body.appendChild(p);
-                    p.addEventListener('animationiteration', () => {
-                        p.style.left = Math.random() * 100 + 'vw';
-                    });
-                }, i * 200);
-            }
+        /* ---- ポインターの位置からセグメント番号を取得 ---- */
+        function getSegmentAtPointer(rotRad) {
+            const rotDeg = ((rotRad * 180 / Math.PI) % 360 + 360) % 360;
+            const pointerInWheel = ((270 - rotDeg) % 360 + 360) % 360;
+            return Math.floor(pointerInWheel / SEG_DEG) % SEG_COUNT;
         }
 
-        function createLightDots() {
-            const ring = document.getElementById('lightRing');
-            for (let i = 0; i < 24; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'light-dot';
-                const angle = (i / 24) * Math.PI * 2;
-                const r = 215;
-                dot.style.left = (220 + Math.cos(angle) * r - 5) + 'px';
-                dot.style.top = (220 + Math.sin(angle) * r - 5) + 'px';
-                dot.style.animationDelay = (i * 0.1) + 's';
-                const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#ff00ff', '#ffd700'];
-                dot.style.background = colors[i % colors.length];
-                dot.style.boxShadow = `0 0 8px ${colors[i % colors.length]}`;
-                ring.appendChild(dot);
-            }
-        }
-
+        /* ---- 当選決定 (確率通り) ---- */
         function determineResult() {
-            const rand = Math.random() * 100;
-            if (rand < 10) return { label: '金賞', class: 'gold', emoji: '👑🥇🏆', sub: 'おめでとうございます！！', text: '🎉 金賞 🎉' };
-            if (rand < 40) return { label: '銀賞', class: 'silver', emoji: '🥈✨', sub: 'すばらしい！', text: '🎊 銀賞 🎊' };
-            if (rand < 50) return { label: '特別賞', class: 'special', emoji: '🌟⭐💫', sub: 'スペシャル！！！', text: '🌈 特別賞 🌈' };
-            return { label: '銅賞', class: 'bronze', emoji: '🥉🎉', sub: 'おめでとう！', text: '🎈 銅賞 🎈' };
+            const r = Math.random() * 100;
+            if (r < 10) return { label: '金賞',  cls: 'gold',    emoji: '👑🥇🏆', sub: 'おめでとうございます！！', text: '🎉 金賞 🎉' };
+            if (r < 40) return { label: '銀賞',  cls: 'silver',  emoji: '🥈✨',   sub: 'すばらしい！',           text: '🎊 銀賞 🎊' };
+            if (r < 50) return { label: '特別賞', cls: 'special', emoji: '🌟⭐💫', sub: 'スペシャル！！！',       text: '🌈 特別賞 🌈' };
+            return                { label: '銅賞',  cls: 'bronze',  emoji: '🥉🎉',   sub: 'おめでとう！',           text: '🎈 銅賞 🎈' };
         }
 
-        function getSegmentIndex(label) {
-            const indices = [];
-            segments.forEach((s, i) => {
-                if (s.label === label) indices.push(i);
-            });
-            return indices[Math.floor(Math.random() * indices.length)];
+        /* ---- 該当ラベルのセグメントインデックスをランダムに1つ返す ---- */
+        function pickSegIndex(label) {
+            const arr = [];
+            segments.forEach((s, i) => { if (s.label === label) arr.push(i); });
+            return arr[Math.floor(Math.random() * arr.length)];
         }
 
+        /* ---- スピン ---- */
         function spin() {
             if (isSpinning) return;
             isSpinning = true;
             document.getElementById('spinBtn').disabled = true;
 
             const result = determineResult();
-            const segIndex = getSegmentIndex(result.label);
+            const segIdx = pickSegIndex(result.label);
 
-            // ターゲット角度を計算（ポインターは上にある = -π/2）
-            const segAngle = 36; // 各セグメントの角度
-            const targetSegCenter = segIndex * segAngle + segAngle / 2;
-            // ポインターは上（270度 = -90度の位置）
-            // ホイールは時計回りに回転するので、ターゲットが上に来るように
-            const targetDeg = 360 - targetSegCenter + 270;
-            const fullSpins = Math.floor(Math.random() * 3 + 6) * 360; // 6-8回転
-            const totalRotation = fullSpins + targetDeg;
-            const totalRotationRad = (totalRotation * Math.PI) / 180;
+            // セグメント segIdx の中心がポインター (270°) に来る回転角を求める
+            // ホイール座標でセグメント中心 = segIdx * 36 + 18 (度)
+            // ポインターはキャンバス 270° → ホイール座標 = 270 - R
+            // 270 - R = segIdx*36 + 18  →  R = 252 - segIdx*36
+            const perfectDeg = ((252 - segIdx * SEG_DEG) % 360 + 360) % 360;
 
-            const startRotation = currentRotation;
-            const duration = 5000 + Math.random() * 2000;
+            // セグメント内でランダムにずらす (端から3°はマージン)
+            const margin = 3;
+            const offsetInSeg = (Math.random() - 0.5) * (SEG_DEG - margin * 2);
+            let targetDeg = ((perfectDeg + offsetInSeg) % 360 + 360) % 360;
+
+            // 現在の角度 (度)
+            const curDeg = ((currentRotation * 180 / Math.PI) % 360 + 360) % 360;
+
+            // 追加回転量
+            let delta = targetDeg - curDeg;
+            if (delta < 0) delta += 360;
+
+            const fullSpins = (Math.floor(Math.random() * 3) + 7) * 360;
+            const totalDeltaRad = ((fullSpins + delta) * Math.PI) / 180;
+
+            const startRot = currentRotation;
+            const duration = 5500 + Math.random() * 2000;
             const startTime = performance.now();
-
-            // チックサウンドの代わりに視覚エフェクト
-            let lastSegment = -1;
+            let lastSeg = -1;
+            const pointer = document.getElementById('pointer');
 
             function animate(now) {
                 const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+                const t = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - t, 4);
 
-                // イージング (cubic ease-out with bounce feel)
-                const eased = 1 - Math.pow(1 - progress, 4);
-                
-                currentRotation = startRotation + totalRotationRad * eased;
+                currentRotation = startRot + totalDeltaRad * eased;
                 drawWheel(currentRotation);
 
-                // セグメント変化時のフラッシュ
-                const currentDeg = ((currentRotation * 180 / Math.PI) % 360 + 360) % 360;
-                const currentSeg = Math.floor(currentDeg / 36) % 10;
-                if (currentSeg !== lastSegment && progress < 0.9) {
-                    lastSegment = currentSeg;
-                    // 軽いパルスエフェクト
-                    canvas.style.filter = `drop-shadow(0 0 ${20 + Math.random() * 15}px rgba(255, 255, 255, ${0.5 - progress * 0.4}))`;
+                // セグメントが変わるたびにポインターを揺らす
+                const seg = getSegmentAtPointer(currentRotation);
+                if (seg !== lastSeg) {
+                    lastSeg = seg;
+                    if (t < 0.92) {
+                        pointer.style.animation = 'none';
+                        void pointer.offsetWidth;
+                        pointer.style.animation = 'shakePointer 0.08s ease';
+                    }
+                    if (t < 0.7) {
+                        canvas.style.filter =
+                            `drop-shadow(0 0 ${18 + Math.random() * 12}px rgba(255,255,255,${0.6 - t * 0.5}))`;
+                    }
                 }
 
-                if (progress < 1) {
+                if (t < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    canvas.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))';
+                    pointer.style.animation = 'pointerPulse 1s ease-in-out infinite';
+                    canvas.style.filter = 'drop-shadow(0 0 15px rgba(255,255,255,0.3))';
+
+                    // 最終確認 — ポインター直下のセグメントを読み取って表示
+                    const landedIdx = getSegmentAtPointer(currentRotation);
+                    const landed = segments[landedIdx];
+                    document.getElementById('debugInfo').textContent =
+                        `▼ が指しているマス: ${landed.emoji} ${landed.label}`;
+
                     showResult(result);
                 }
             }
-
             requestAnimationFrame(animate);
         }
 
+        /* ---- 結果表示 ---- */
         function showResult(result) {
-            // フラッシュ
             const flash = document.createElement('div');
             flash.className = 'flash';
             document.body.appendChild(flash);
-            setTimeout(() => flash.remove(), 300);
+            setTimeout(() => flash.remove(), 400);
 
             setTimeout(() => {
-                const overlay = document.getElementById('resultOverlay');
-                const box = document.getElementById('resultBox');
-                const emoji = document.getElementById('resultEmoji');
-                const text = document.getElementById('resultText');
-                const sub = document.getElementById('resultSub');
+                document.getElementById('resultBox').className = 'result-box ' + result.cls;
+                document.getElementById('resultEmoji').textContent = result.emoji;
+                document.getElementById('resultText').textContent = result.text;
+                document.getElementById('resultSub').textContent = result.sub;
+                document.getElementById('resultOverlay').classList.add('show');
 
-                box.className = 'result-box ' + result.class;
-                emoji.textContent = result.emoji;
-                text.textContent = result.text;
-                sub.textContent = result.sub;
-                overlay.classList.add('show');
-
-                // 花火
-                launchFireworks(result.class === 'gold' || result.class === 'special' ? 8 : 3);
-
-                // 紙吹雪
-                if (result.class === 'gold' || result.class === 'special') {
-                    launchConfetti(80);
-                } else {
-                    launchConfetti(30);
-                }
-            }, 300);
-        }
-
-        function launchFireworks(count) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    createFirework(
-                        Math.random() * window.innerWidth,
-                        Math.random() * window.innerHeight * 0.6
-                    );
-                }, i * 300);
-            }
-        }
-
-        function createFirework(x, y) {
-            const container = document.createElement('div');
-            container.className = 'firework';
-            container.style.left = x + 'px';
-            container.style.top = y + 'px';
-            document.body.appendChild(container);
-
-            const colors = ['#ff0000', '#ffd700', '#00ff00', '#00ffff', '#ff00ff', '#ffaa00', '#ff4488'];
-            const particleCount = 30;
-
-            for (let i = 0; i < particleCount; i++) {
-                const p = document.createElement('div');
-                p.className = 'firework-particle';
-                const angle = (i / particleCount) * Math.PI * 2;
-                const dist = 80 + Math.random() * 80;
-                p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
-                p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
-                p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                p.style.boxShadow = `0 0 6px ${p.style.background}`;
-                container.appendChild(p);
-            }
-
-            setTimeout(() => container.remove(), 1500);
-        }
-
-        function launchConfetti(count) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const c = document.createElement('div');
-                    c.className = 'confetti';
-                    c.style.left = Math.random() * 100 + 'vw';
-                    c.style.top = '-10px';
-                    c.style.width = (Math.random() * 10 + 5) + 'px';
-                    c.style.height = (Math.random() * 10 + 5) + 'px';
-                    const shapes = ['50%', '0%'];
-                    c.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
-                    const colors = ['#ff0000', '#ffd700', '#00ff00', '#00aaff', '#ff00ff', '#ffaa00', '#ff6699', '#aaffaa'];
-                    c.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    document.body.appendChild(c);
-                    setTimeout(() => c.remove(), 4000);
-                }, i * 30);
-            }
+                const big = (result.cls === 'gold' || result.cls === 'special');
+                launchFireworks(big ? 10 : 3);
+                launchConfetti(big ? 100 : 30);
+            }, 350);
         }
 
         function closeResult() {
@@ -669,9 +563,97 @@
             document.getElementById('spinBtn').disabled = false;
         }
 
-        // 初期化
+        /* ---- 花火 ---- */
+        function launchFireworks(n) {
+            for (let i = 0; i < n; i++) {
+                setTimeout(() => createFirework(
+                    Math.random() * innerWidth,
+                    Math.random() * innerHeight * 0.6
+                ), i * 300);
+            }
+        }
+
+        function createFirework(x, y) {
+            const c = document.createElement('div');
+            c.className = 'firework';
+            c.style.left = x + 'px';
+            c.style.top = y + 'px';
+            document.body.appendChild(c);
+            const cols = ['#ff0000','#ffd700','#00ff00','#00ffff','#ff00ff','#ffaa00','#ff4488'];
+            for (let i = 0; i < 32; i++) {
+                const p = document.createElement('div');
+                p.className = 'firework-particle';
+                const a = (i / 32) * Math.PI * 2;
+                const d = 80 + Math.random() * 80;
+                p.style.setProperty('--tx', Math.cos(a) * d + 'px');
+                p.style.setProperty('--ty', Math.sin(a) * d + 'px');
+                p.style.background = cols[Math.floor(Math.random() * cols.length)];
+                p.style.boxShadow = `0 0 6px ${p.style.background}`;
+                c.appendChild(p);
+            }
+            setTimeout(() => c.remove(), 1500);
+        }
+
+        /* ---- 紙吹雪 ---- */
+        function launchConfetti(n) {
+            for (let i = 0; i < n; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    c.className = 'confetti';
+                    c.style.left = Math.random() * 100 + 'vw';
+                    const s = Math.random() * 10 + 5;
+                    c.style.width = s + 'px';
+                    c.style.height = s + 'px';
+                    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    const cols = ['#ff0000','#ffd700','#00ff00','#00aaff','#ff00ff','#ffaa00','#ff6699','#aaffaa'];
+                    c.style.background = cols[Math.floor(Math.random() * cols.length)];
+                    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 4500);
+                }, i * 25);
+            }
+        }
+
+        /* ---- 背景パーティクル ---- */
+        function createBgParticles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const s = Math.random() * 6 + 2;
+                    const cols = ['#ff0080','#00ffff','#ffd700','#ff4444','#44ff44','#ff00ff'];
+                    p.style.width = s + 'px';
+                    p.style.height = s + 'px';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.background = cols[Math.floor(Math.random() * cols.length)];
+                    p.style.animationDuration = (Math.random() * 5 + 4) + 's';
+                    p.style.animationDelay = (Math.random() * 3) + 's';
+                    document.body.appendChild(p);
+                }, i * 200);
+            }
+        }
+
+        /* ---- 電飾ドット ---- */
+        function createLightDots() {
+            const ring = document.getElementById('lightRing');
+            for (let i = 0; i < 24; i++) {
+                const d = document.createElement('div');
+                d.className = 'light-dot';
+                const a = (i / 24) * Math.PI * 2;
+                const r = 215;
+                d.style.left = (220 + Math.cos(a) * r - 5) + 'px';
+                d.style.top  = (220 + Math.sin(a) * r - 5) + 'px';
+                d.style.animationDelay = (i * 0.1) + 's';
+                const cols = ['#ff0000','#ffff00','#00ff00','#00ffff','#ff00ff','#ffd700'];
+                d.style.background = cols[i % cols.length];
+                d.style.boxShadow = `0 0 8px ${cols[i % cols.length]}`;
+                ring.appendChild(d);
+            }
+        }
+
+        /* ---- 初期化 ---- */
         drawWheel(0);
-        createBackgroundParticles();
+        createBgParticles();
         createLightDots();
     </script>
 </body>
